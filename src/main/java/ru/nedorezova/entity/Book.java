@@ -1,6 +1,4 @@
-package ru.nedorezova.model;
-
-import ru.nedorezova.model.Author;
+package ru.nedorezova.entity;
 
 public class Book {
     private int id;

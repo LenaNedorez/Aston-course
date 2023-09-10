@@ -1,22 +1,17 @@
-package ru.nedorezova.model;
+package ru.nedorezova.entity;
 
-import ru.nedorezova.model.Book;
-
-import java.util.List;
-
-public class Genre {
-
+public class Author {
     private int id;
     private String name;
-    private List<Book> books;
+    private String surname;
 
-    public Genre(int id, String name, List<Book> books) {
+    public Author(int id, String name, String surname) {
         this.id = id;
         this.name = name;
-        this.books = books;
+        this.surname = surname;
     }
 
-    public Genre() {
+    public Author() {
     }
 
     public int getId() {
@@ -35,4 +30,11 @@ public class Genre {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 }

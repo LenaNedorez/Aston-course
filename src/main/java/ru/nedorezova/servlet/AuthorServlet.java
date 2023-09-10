@@ -1,7 +1,7 @@
-package ru.nedorezova;
+package ru.nedorezova.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.nedorezova.model.Author;
+import ru.nedorezova.entity.Author;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,7 +55,7 @@ public class AuthorServlet extends HttpServlet {
     private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Author> authors = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Author")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM authors")) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 authors.add(new Author(
@@ -76,7 +76,7 @@ public class AuthorServlet extends HttpServlet {
 
     private void getAuthorById(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Author WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM authors WHERE id = ?")) {
             statement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -100,7 +100,7 @@ public class AuthorServlet extends HttpServlet {
 
     private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO Author (name, surname) VALUES (?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO authors (name, surname) VALUES (?, ?)")) {
             statement.setString(1, "Author's name");
             statement.setString(2, "Author's surname");
             statement.executeUpdate();
@@ -113,7 +113,7 @@ public class AuthorServlet extends HttpServlet {
 
     private void updateAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("UPDATE Author SET name = ?, surname = ? WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE authors SET name = ?, surname = ? WHERE id = ?")) {
             statement.setString(1, "Author's name"); // Заменить на полученные данные
             statement.setString(2, "Author's surname"); // Заменить на полученные данные
             statement.setInt(3, Integer.parseInt(id));
@@ -127,7 +127,7 @@ public class AuthorServlet extends HttpServlet {
 
     private void deleteAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM Author WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM authors WHERE id = ?")) {
             statement.setInt(1, Integer.parseInt(id));
             statement.executeUpdate();
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
