@@ -65,6 +65,41 @@ public class MyArrayList<E> {
     }
 
 
+    public void sort() {
+        quickSort(0, size - 1);
+    }
+
+
+    private void quickSort(int low, int high) {
+        if (low < high) {
+            int pi = partition(low, high);
+            quickSort(low, pi - 1);
+            quickSort(pi + 1, high);
+        }
+    }
+
+
+    private int partition(int low, int high) {
+        E pivot = (E) data[high];
+        int i = (low - 1);
+        for (int j = low; j < high; j++) {
+            if (((Comparable) data[j]).compareTo(pivot) <= 0) {
+                i++;
+                swap(i, j);
+            }
+        }
+        swap(i + 1, high);
+        return i + 1;
+    }
+
+
+    private void swap(int i, int j) {
+        Object temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
+    }
+
+
     private void resize(int newSize) {
         Object[] temp = new Object[newSize];
         System.arraycopy(data, 0, temp, 0, size);
