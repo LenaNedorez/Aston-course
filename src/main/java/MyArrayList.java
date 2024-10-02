@@ -41,6 +41,17 @@ public class MyArrayList<E> {
     }
 
 
+    public E remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        E removedElement = (E) data[index];
+        System.arraycopy(data, index + 1, data, index, size - index - 1);
+        data[--size] = null;
+        return removedElement;
+    }
+
+
     public void clear() {
         for (int i = 0; i < size; i++) {
             data[i] = null;
