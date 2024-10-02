@@ -70,11 +70,25 @@ public class MyArrayList<E> {
     }
 
 
+    public void sort(Comparator<? super E> comparator) {
+        quickSort(0, size - 1, comparator);
+    }
+
+
     private void quickSort(int low, int high) {
         if (low < high) {
             int pi = partition(low, high);
             quickSort(low, pi - 1);
             quickSort(pi + 1, high);
+        }
+    }
+
+
+    private void quickSort(int low, int high, Comparator<? super E> comparator) {
+        if (low < high) {
+            int pi = partition(low, high, comparator);
+            quickSort(low, pi - 1, comparator);
+            quickSort(pi + 1, high, comparator);
         }
     }
 
