@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MyArrayListTest {
 
-
+    /**
+     Checks that the sort method correctly sorts a list of ints.
+     */
     @Test
     void testSort() {
         MyArrayList<Integer> list = new MyArrayList<>();
@@ -25,7 +27,9 @@ public class MyArrayListTest {
         assertEquals(9, list.get(4));
     }
 
-
+    /**
+     * Checks that the sort method correctly sorts a list of strings by length using provided comparator.
+     */
     @Test
     void testSortWithComparator() {
         MyArrayList<String> list = new MyArrayList<>();
