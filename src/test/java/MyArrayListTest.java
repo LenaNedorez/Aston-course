@@ -1,14 +1,73 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MyArrayListTest {
 
-    /**
-     Checks that the sort method correctly sorts a list of ints.
-     */
+    @Test
+    void add() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("Hello");
+        list.add("World");
+        assertEquals(2, list.size());
+        assertEquals("Hello", list.get(0));
+        assertEquals("World", list.get(1));
+    }
+
+    @Test
+    void addAtIndex() {
+        MyArrayList<Integer> list = new MyArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(1, 3);
+        assertEquals(3, list.size());
+        assertEquals(1, list.get(0));
+        assertEquals(3, list.get(1));
+        assertEquals(2, list.get(2));
+    }
+
+    @Test
+    void get() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("Hello");
+        list.add("World");
+        assertEquals("Hello", list.get(0));
+        assertEquals("World", list.get(1));
+    }
+
+    @Test
+    void remove() {
+        MyArrayList<Integer> list = new MyArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(3, list.size());
+        assertEquals(2, list.remove(1));
+        assertEquals(2, list.size());
+        assertEquals(1, list.get(0));
+        assertEquals(3, list.get(1));
+    }
+
+    @Test
+    void clear() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("Hello");
+        list.add("World");
+        list.clear();
+        assertEquals(0, list.size());
+    }
+
+    @Test
+    void size() {
+        MyArrayList<Integer> list = new MyArrayList<>();
+        assertEquals(0, list.size());
+        list.add(1);
+        assertEquals(1, list.size());
+        list.add(2);
+        assertEquals(2, list.size());
+    }
+
     @Test
     void testSort() {
         MyArrayList<Integer> list = new MyArrayList<>();
@@ -27,9 +86,6 @@ public class MyArrayListTest {
         assertEquals(9, list.get(4));
     }
 
-    /**
-     * Checks that the sort method correctly sorts a list of strings by length using provided comparator.
-     */
     @Test
     void testSortWithComparator() {
         MyArrayList<String> list = new MyArrayList<>();
