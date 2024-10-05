@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ task1 ]  # Деплой только при push в ветку main
+    branches: [ task1 ]  # Деплой только при push в ветку task1
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Deploy to Heroku
         uses: actions/heroku/setup@v1  # Настройка подключения к Heroku
         with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}  # Вставьте ваш секретный ключ Heroku
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}  # Cекретный ключ Heroku
           heroku_app_name: your-heroku-app-name  # Вставьте имя вашего приложения на Heroku
       - name: Deploy to Heroku
         uses: actions/heroku/deploy@v1  # Развертывание приложения на Heroku
