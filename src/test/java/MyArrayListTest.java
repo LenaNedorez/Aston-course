@@ -92,11 +92,11 @@ public class MyArrayListTest {
         list.add("apple");
         list.add("pineapple");
         list.add("cherry");
-        list.add("grape");
+        list.add("kiwi");
 
         list.sort(Comparator.comparingInt(String::length));
 
-        assertEquals("grape", list.get(0));
+        assertEquals("kiwi", list.get(0));
         assertEquals("apple", list.get(1));
         assertEquals("cherry", list.get(2));
         assertEquals("pineapple", list.get(3));
