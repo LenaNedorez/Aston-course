@@ -100,7 +100,7 @@ public class MyArrayList<E> {
      * Sorts MyArrayList using the QuickSort algorithm.
      */
     public void sort() {
-        quickSort(0, size - 1);
+        QuickSort.sort(data, 0, size - 1);
     }
 
     /**
@@ -112,89 +112,7 @@ public class MyArrayList<E> {
         if(comparator == null){
             throw new NullPointerException("Comparator cannot be null");
         }
-        quickSort(0, size - 1, comparator);
-    }
-
-    /**
-     * Recursive QuickSort method for sorting MyArrayList.
-     *
-     * @param low  Starting index.
-     * @param high Ending index.
-     */
-    private void quickSort(int low, int high) {
-        if (low < high) {
-            int pi = partition(low, high);
-            quickSort(low, pi - 1);
-            quickSort(pi + 1, high);
-        }
-    }
-
-    /**
-     * Recursive QuickSort method for sorting MyArrayList with the specified comparator.
-     *
-     * @param low        Starting index.
-     * @param high       Ending index.
-     * @param comparator Comparator for comparing elements.
-     */
-    private void quickSort(int low, int high, Comparator<? super E> comparator) {
-        if (low < high) {
-            int pi = partition(low, high, comparator);
-            quickSort(low, pi - 1, comparator);
-            quickSort(pi + 1, high, comparator);
-        }
-    }
-
-    /**
-     * Splitting an array over a pivot element.
-     *
-     * @param low        Starting index.
-     * @param high       Ending index.
-     * @return           Index of a pivot element.
-     */
-    private int partition(int low, int high) {
-        E pivot = (E) data[high];
-        int i = (low - 1);
-        for (int j = low; j < high; j++) {
-            if (((Comparable) data[j]).compareTo(pivot) <= 0) {
-                i++;
-                swap(i, j);
-            }
-        }
-        swap(i + 1, high);
-        return i + 1;
-    }
-
-    /**
-     * Splitting an array over a pivot element using a comparator.
-     *
-     * @param low        Starting index.
-     * @param high       Ending index.
-     * @param comparator Comparator for comparing elements.
-     * @return           Index of a pivot element.
-     */
-    private int partition(int low, int high, Comparator<? super E> comparator) {
-        E pivot = (E) data[high];
-        int i = (low - 1);
-        for (int j = low; j < high; j++) {
-            if (comparator.compare((E) data[j], pivot) <= 0) {
-                i++;
-                swap(i, j);
-            }
-        }
-        swap(i + 1, high);
-        return i + 1;
-    }
-
-    /**
-     * Swaps two elements in an array.
-     *
-     * @param i Index of the first element.
-     * @param j Index of the second element.
-     */
-    private void swap(int i, int j) {
-        Object temp = data[i];
-        data[i] = data[j];
-        data[j] = temp;
+        QuickSort.sort(data, 0, size - 1, comparator);
     }
 
     /**
