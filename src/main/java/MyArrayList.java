@@ -1,4 +1,4 @@
-﻿import java.util.Comparator;
+import java.util.Comparator;
 
 /**
  * ArrayList realisation on the base of Array. Not thread safe.
