@@ -24,7 +24,7 @@ public class MyArrayList<E> {
      */
     public void add(E element) {
         if (size == data.length) {
-            resize(data.length * 2);
+            resize(data.length * 3 / 2);
         }
         data[size++] = element;
     }
@@ -40,9 +40,7 @@ public class MyArrayList<E> {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-        if (size == data.length) {
-            resize(data.length * 2);
-        }
+        ensureCapacity(size + 1);
         System.arraycopy(data, index, data, index + 1, size - index);
         data[index] = element;
         size++;
@@ -111,6 +109,9 @@ public class MyArrayList<E> {
      * @param comparator Comparator for comparing elements.
      */
     public void sort(Comparator<? super E> comparator) {
+        if(comparator == null){
+            throw new NullPointerException("Comparator cannot be null");
+        }
         quickSort(0, size - 1, comparator);
     }
 
@@ -194,6 +195,17 @@ public class MyArrayList<E> {
         Object temp = data[i];
         data[i] = data[j];
         data[j] = temp;
+    }
+
+    /**
+     * Increases the capacity of the array if the current capacity is less than the minimum required.
+     *
+     * @param minCapacity Minimum required capacity.
+     */
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity > data.length) {
+            resize(data.length * 3 / 2);
+        }
     }
 
     /**
