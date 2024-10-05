@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ task1 ]  # Деплой только при push в ветку task1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Использование среды выполнения ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2  # Скачивание кода из репозитория
+      - name: Build
+        run: npm install && npm run build  # Установка зависимостей и сборка приложения
+      - name: Deploy
+        uses: actions/upload-artifact@v2  # Загрузка артефактов (собранного приложения)
+        with:
+          name: app
+          path: ./dist  # Путь к папке с собранным приложением (измените, если нужно)
+      - name: Deploy to Heroku
+        uses: actions/heroku/setup@v1  # Настройка подключения к Heroku
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}  # Cекретный ключ Heroku
+          heroku_app_name: your-heroku-app-name  # Вставьте имя вашего приложения на Heroku
+      - name: Deploy to Heroku
+        uses: actions/heroku/deploy@v1  # Развертывание приложения на Heroku
