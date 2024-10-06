@@ -6,11 +6,21 @@ The task is to implement ArrayList (not thread safe). Methods: add element, add 
 ## Description
 This code is a simple implementation of ArrayList in Java using an array and the QuickSort algorithm. It demonstrates the basic principles of list implementation and sorting algorithms, as well as the use of generics and comparators.
 
-## Methods
-• QuickSort implementation uses a recursive algorithm that splits the list into two parts over a pivot element and recursively sorts each of them.
-• Partition method implements splitting a list by choosing the last element as the pivot.
-• Sort method can take a comparator as an input for sorting list by criteria, provided by this comparator.
+## Classes and Methods
+### MyArrayList
+
+• Add method inserts the given element to the end of the array.
+• Add at index method inserts the given element at the specified index.
+• Get method returns the element at the given index.
+• Remove method removes the element at the given index.
+• Clear method removes all elements from the array.
 • Resize method is used to increase the size of an array when adding elements.
+
+### Quicksort
+QuickSort implementation uses a recursive algorithm that splits the list into two parts over a pivot element and recursively sorts each of them.
+
+• Sort method can take a comparator as an input for sorting list by criteria, provided by this comparator.
+• Partition method implements splitting a list by choosing the last element as the pivot.
 
 ## Tests
 add(): Checks that adding elements to a list works correctly, the size of the list was increased, and elements were added to the correct location.
