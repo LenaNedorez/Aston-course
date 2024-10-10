@@ -9,9 +9,9 @@ import java.util.List;
 
 public class AuthorServlet extends HttpServlet {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/library";
-    private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = "password";
+    private String jdbcUrl = System.getProperty("jdbc.url");
+    private String jdbcUser = System.getProperty("jdbc.user");
+    private String jdbcPassword = System.getProperty("jdbc.password");
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +50,7 @@ public class AuthorServlet extends HttpServlet {
 
     private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Author> authors = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM Author")) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -68,7 +68,7 @@ public class AuthorServlet extends HttpServlet {
     }
 
     private void getAuthorById(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM Author WHERE id = ?")) {
             statement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = statement.executeQuery();
@@ -88,7 +88,7 @@ public class AuthorServlet extends HttpServlet {
     }
 
     private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("INSERT INTO Author (name, surname) VALUES (?, ?)")) {
             statement.setString(1, "Имя автора"); // Заменить на полученные данные
             statement.setString(2, "Фамилия автора"); // Заменить на полученные данные
@@ -101,7 +101,7 @@ public class AuthorServlet extends HttpServlet {
     }
 
     private void updateAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("UPDATE Author SET name = ?, surname = ? WHERE id = ?")) {
             statement.setString(1, "Имя автора"); // Заменить на полученные данные
             statement.setString(2, "Фамилия автора"); // Заменить на полученные данные
@@ -115,7 +115,7 @@ public class AuthorServlet extends HttpServlet {
     }
 
     private void deleteAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("DELETE FROM Author WHERE id = ?")) {
             statement.setInt(1, Integer.parseInt(id));
             statement.executeUpdate();
