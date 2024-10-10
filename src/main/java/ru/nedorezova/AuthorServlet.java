@@ -1,3 +1,8 @@
+package ru.nedorezova;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.nedorezova.model.Author;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +33,6 @@ public class AuthorServlet extends HttpServlet {
         createAuthor(request, response);
     }
 
-    @Override
     protected void put(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getPathInfo();
         if (id != null && !id.isEmpty()) {
@@ -64,7 +68,10 @@ public class AuthorServlet extends HttpServlet {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        // Обработать и отправить список авторов в формате JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(authors);
+        response.setContentType("application/json");
+        response.getWriter().write(json);
     }
 
     private void getAuthorById(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
@@ -78,6 +85,10 @@ public class AuthorServlet extends HttpServlet {
                         resultSet.getString("name"),
                         resultSet.getString("surname")
                 );
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(author);
+            response.setContentType("application/json");
+            response.getWriter().write(json);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
@@ -90,8 +101,8 @@ public class AuthorServlet extends HttpServlet {
     private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("INSERT INTO Author (name, surname) VALUES (?, ?)")) {
-            statement.setString(1, "Имя автора"); // Заменить на полученные данные
-            statement.setString(2, "Фамилия автора"); // Заменить на полученные данные
+            statement.setString(1, "Author's name");
+            statement.setString(2, "Author's surname");
             statement.executeUpdate();
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (SQLException e) {
@@ -103,8 +114,8 @@ public class AuthorServlet extends HttpServlet {
     private void updateAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement("UPDATE Author SET name = ?, surname = ? WHERE id = ?")) {
-            statement.setString(1, "Имя автора"); // Заменить на полученные данные
-            statement.setString(2, "Фамилия автора"); // Заменить на полученные данные
+            statement.setString(1, "Author's name"); // Заменить на полученные данные
+            statement.setString(2, "Author's surname"); // Заменить на полученные данные
             statement.setInt(3, Integer.parseInt(id));
             statement.executeUpdate();
             response.setStatus(HttpServletResponse.SC_OK);
