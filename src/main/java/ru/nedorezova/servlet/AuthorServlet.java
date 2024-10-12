@@ -1,8 +1,10 @@
 package ru.nedorezova.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.nedorezova.dao.AuthorDAO;
 import ru.nedorezova.model.Author;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorServlet extends HttpServlet {
+
+    private AuthorDAO authorDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,26 +33,11 @@ public class AuthorServlet extends HttpServlet {
         createAuthor(request, response);
     }
 
-    private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Author> authors = new ArrayList<>();
-        try (Connection connection = libraryConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM authors")) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                authors.add(new Author(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("surname")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(authors);
-        response.setContentType("application/json");
-        response.getWriter().write(json);
+        private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            List<Author> listOfAuthors = authorDAO.getAllAuthors();
+            request.setAttribute("listOfAuthors", listOfAuthors);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("list-of-authors.jsp");
+            dispatcher.forward(request, response);
     }
 
     private void getAuthorById(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {

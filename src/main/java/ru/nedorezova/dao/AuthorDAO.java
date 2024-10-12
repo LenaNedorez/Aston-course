@@ -1,8 +1,10 @@
 package ru.nedorezova.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import ru.nedorezova.model.Author;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorDAO {
 
@@ -25,5 +27,27 @@ public class AuthorDAO {
             e.printStackTrace();
         }
         return connection;
+    }
+
+
+    public List<Author> getAllAuthors() {
+
+        List <Author> authors = new ArrayList<Author>();
+        try(Connection connection = getConnection();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM authors");){
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                authors.add(new Author(id, name, surname));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return authors;
     }
 }
