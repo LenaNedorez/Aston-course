@@ -1,5 +1,7 @@
 package ru.nedorezova.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.nedorezova.dao.AuthorDAO;
 import ru.nedorezova.model.Author;
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 public class AuthorDAOImpl implements AuthorDAO {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthorDAOImpl.class);
     private final String jdbcUrl = "jdbc:postgresql://localhost:5432/library";
     private final String jdbcUser = "postgres";
     private final String jdbcPassword = "password";
@@ -78,7 +81,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             preparedStatement.setString(2, author.getSurname());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error creating author: {}", author, e);
         }
     }
 }
