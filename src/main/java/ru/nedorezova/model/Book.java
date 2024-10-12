@@ -1,4 +1,4 @@
-package ru.nedorezova.entity;
+package ru.nedorezova.model;
 
 public class Book {
     private int id;

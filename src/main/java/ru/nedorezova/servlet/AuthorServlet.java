@@ -1,7 +1,8 @@
 package ru.nedorezova.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.nedorezova.entity.Author;
+import ru.nedorezova.connection.LibraryConnection;
+import ru.nedorezova.model.Author;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,9 +15,7 @@ import java.util.List;
 
 public class AuthorServlet extends HttpServlet {
 
-    private String jdbcUrl = System.getProperty("jdbc.url");
-    private String jdbcUser = System.getProperty("jdbc.user");
-    private String jdbcPassword = System.getProperty("jdbc.password");
+    private final LibraryConnection libraryConnection = new LibraryConnection();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,18 +32,9 @@ public class AuthorServlet extends HttpServlet {
         createAuthor(request, response);
     }
 
-    protected void put(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getPathInfo();
-        if (id != null && !id.isEmpty()) {
-            updateAuthor(request, response, id.substring(1));
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
-
     private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Author> authors = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+        try (Connection connection = libraryConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM authors")) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -95,20 +85,6 @@ public class AuthorServlet extends HttpServlet {
             statement.setString(2, "Author's surname");
             statement.executeUpdate();
             response.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    private void updateAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("UPDATE authors SET name = ?, surname = ? WHERE id = ?")) {
-            statement.setString(1, "Author's name"); // Заменить на полученные данные
-            statement.setString(2, "Author's surname"); // Заменить на полученные данные
-            statement.setInt(3, Integer.parseInt(id));
-            statement.executeUpdate();
-            response.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

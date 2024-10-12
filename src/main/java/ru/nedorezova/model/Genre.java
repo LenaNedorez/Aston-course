@@ -1,4 +1,4 @@
-package ru.nedorezova.entity;
+package ru.nedorezova.model;
 
 import java.util.List;
 
