@@ -1,7 +1,7 @@
 package ru.nedorezova.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.nedorezova.dao.AuthorDAO;
+import ru.nedorezova.repository.AuthorDAOImpl;
 import ru.nedorezova.model.Author;
 
 import javax.servlet.RequestDispatcher;
@@ -11,12 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorServlet extends HttpServlet {
 
-    private AuthorDAO authorDAO;
+    private AuthorDAOImpl authorDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
