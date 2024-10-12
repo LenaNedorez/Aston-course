@@ -1,23 +1,23 @@
-CREATE TABLE authors (
+CREATE TABLE Author (
                         id SERIAL PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
                         surname VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE books (
+CREATE TABLE Book (
                       id SERIAL PRIMARY KEY,
                       title VARCHAR(255) NOT NULL,
                       genre VARCHAR(255) NOT NULL,
-                      author_id INTEGER REFERENCES authors(id)
+                      author_id INTEGER REFERENCES Author(id)
 );
 
-CREATE TABLE genres (
+CREATE TABLE Genre (
                        id SERIAL PRIMARY KEY,
                        name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE book_genres (
-                           book_id INTEGER REFERENCES books(id),
-                           genre_id INTEGER REFERENCES genres(id),
+CREATE TABLE BookGenre (
+                           book_id INTEGER REFERENCES Book(id),
+                           genre_id INTEGER REFERENCES Genre(id),
                            PRIMARY KEY (book_id, genre_id)
 );
