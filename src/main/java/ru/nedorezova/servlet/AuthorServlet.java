@@ -1,7 +1,6 @@
 package ru.nedorezova.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.nedorezova.connection.LibraryConnection;
 import ru.nedorezova.model.Author;
 
 import javax.servlet.ServletException;
@@ -14,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorServlet extends HttpServlet {
-
-    private final LibraryConnection libraryConnection = new LibraryConnection();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,7 +52,7 @@ public class AuthorServlet extends HttpServlet {
     }
 
     private void getAuthorById(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+        try (Connection connection = libraryConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM authors WHERE id = ?")) {
             statement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = statement.executeQuery();
@@ -79,8 +76,10 @@ public class AuthorServlet extends HttpServlet {
     }
 
     private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+        try (Connection connection = libraryConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO authors (name, surname) VALUES (?, ?)")) {
+            String name = request.getParameter("name");
+            String surname = request.getParameter("surname");
             statement.setString(1, "Author's name");
             statement.setString(2, "Author's surname");
             statement.executeUpdate();
