@@ -1,5 +1,7 @@
 package ru.nedorezova.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.nedorezova.dao.BookDAO;
 import ru.nedorezova.model.Author;
 import ru.nedorezova.model.Book;
@@ -10,6 +12,7 @@ import java.util.List;
 
 public class BookDAOImpl implements BookDAO {
 
+    private static final Logger logger = LoggerFactory.getLogger(BookDAOImpl.class);
     private final String jdbcUrl = "jdbc:postgresql://localhost:5432/library";
     private final String jdbcUser = "postgres";
     private final String jdbcPassword = "password";
@@ -24,9 +27,9 @@ public class BookDAOImpl implements BookDAO {
             Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(jdbcUrl,jdbcUser,jdbcPassword);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error connecting to database: ", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("JDBC driver not found: {}", jdbcDriver, e);
         }
         return connection;
     }
@@ -48,7 +51,7 @@ public class BookDAOImpl implements BookDAO {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting all books:", e);
         }
         return books;
     }
@@ -69,7 +72,7 @@ public class BookDAOImpl implements BookDAO {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting book by id: {}", id, e);
         }
         return book;
     }
@@ -83,7 +86,7 @@ public class BookDAOImpl implements BookDAO {
             preparedStatement.setInt(3, book.getAuthor().getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error creating book: {}", book, e);
         }
     }
 
@@ -103,7 +106,7 @@ public class BookDAOImpl implements BookDAO {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting book by author: {}", author, e);
         }
         return books;
     }
@@ -125,7 +128,7 @@ public class BookDAOImpl implements BookDAO {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting book by genre: {}", genre, e);
         }
         return books;
     }

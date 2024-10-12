@@ -26,9 +26,9 @@ public class AuthorDAOImpl implements AuthorDAO {
             Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(jdbcUrl,jdbcUser,jdbcPassword);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error connecting to database: ", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("JDBC driver not found: {}", jdbcDriver, e);
         }
         return connection;
     }
@@ -48,7 +48,6 @@ public class AuthorDAOImpl implements AuthorDAO {
             rs.close();
         } catch (SQLException e) {
             logger.error("Error getting all authors: ", e);
-            return new ArrayList<>();
         }
 
         return authors;
@@ -69,7 +68,6 @@ public class AuthorDAOImpl implements AuthorDAO {
             rs.close();
         } catch (SQLException e) {
             logger.error("Error getting author by id: {}", id, e);
-            return new Author();
         }
 
         return author;

@@ -1,5 +1,7 @@
 package ru.nedorezova.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.nedorezova.dao.GenreDAO;
 import ru.nedorezova.model.Book;
 import ru.nedorezova.model.Genre;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenreDAOImpl implements GenreDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(GenreDAOImpl.class);
 
     private final String jdbcUrl = "jdbc:postgresql://localhost:5432/library";
     private final String jdbcUser = "postgres";
@@ -24,9 +28,9 @@ public class GenreDAOImpl implements GenreDAO {
             Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(jdbcUrl,jdbcUser,jdbcPassword);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error connecting to database: ", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("JDBC driver not found: {}", jdbcDriver, e);
         }
         return connection;
     }
