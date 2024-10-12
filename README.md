@@ -31,7 +31,6 @@ This project implements a REST API for a library, managing book, author and genr
 - GET /authors/{id}: Returns information about the author with the specified id.
 - POST /authors: Creates a new author.
 - PUT /authors/{id}: Updates the author with the specified id.
-- DELETE /authors/{id}: Deletes the author with the specified id.
 
 2. Book:
 
@@ -40,7 +39,6 @@ This project implements a REST API for a library, managing book, author and genr
 - POST /books: Creates a new book.
 - PUT /books/{id}: Updates the book with the specified id.
 - DELETE /books/{id}: Deletes the book with the specified id.
-- GET /books/{id}/author: Returns the author of the book with the specified id.
 
 3. Genre:
 
