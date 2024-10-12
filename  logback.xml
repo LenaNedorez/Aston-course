@@ -6,7 +6,7 @@
         </layout>
     </appender>
 
-    <logger name="com.example.yourpackage" level="debug" additivity="false">
+    <logger name="ru.nedorezova" level="debug" additivity="false">
         <appender-ref ref="CONSOLE" />
     </logger>
 

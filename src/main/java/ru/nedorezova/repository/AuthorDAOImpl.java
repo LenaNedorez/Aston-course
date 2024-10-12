@@ -47,7 +47,8 @@ public class AuthorDAOImpl implements AuthorDAO {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting all authors: ", e);
+            return new ArrayList<>();
         }
 
         return authors;
@@ -67,7 +68,8 @@ public class AuthorDAOImpl implements AuthorDAO {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting author by id: {}", id, e);
+            return new Author();
         }
 
         return author;
