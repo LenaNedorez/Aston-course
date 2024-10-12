@@ -42,16 +42,6 @@ public class AuthorServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getPathInfo();
-        if (id != null && !id.isEmpty()) {
-            deleteAuthor(request, response, id.substring(1));
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
-
     private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Author> authors = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
@@ -119,18 +109,6 @@ public class AuthorServlet extends HttpServlet {
             statement.setInt(3, Integer.parseInt(id));
             statement.executeUpdate();
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    private void deleteAuthor(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM authors WHERE id = ?")) {
-            statement.setInt(1, Integer.parseInt(id));
-            statement.executeUpdate();
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } catch (SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
