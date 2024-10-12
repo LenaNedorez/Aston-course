@@ -38,10 +38,10 @@ public class BookDAOImpl implements BookDAO {
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM books")) {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
+                Integer id = rs.getInt("id");
                 String title = rs.getString("title");
                 String genre = rs.getString("genre");
-                int authorId = rs.getInt("author_id");
+                Integer authorId = rs.getInt("author_id");
                 Author author = new AuthorDAOImpl().getAuthorById(authorId);
                 Book book = new Book(id, title, genre, author);
                 books.add(book);
@@ -63,7 +63,7 @@ public class BookDAOImpl implements BookDAO {
             if (rs.next()) {
                 String title = rs.getString("title");
                 String genre = rs.getString("genre");
-                int authorId = rs.getInt("author_id");
+                Integer authorId = rs.getInt("author_id");
                 Author author = new AuthorDAOImpl().getAuthorById(authorId);
                 book = new Book(id, title, genre, author);
             }
@@ -95,7 +95,7 @@ public class BookDAOImpl implements BookDAO {
             preparedStatement.setInt(1, author.getId());
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
+                Integer id = rs.getInt("id");
                 String title = rs.getString("title");
                 String genre = rs.getString("genre");
                 Book book = new Book(id, title, genre, author);
@@ -116,9 +116,9 @@ public class BookDAOImpl implements BookDAO {
             preparedStatement.setString(1, genre);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
+                Integer id = rs.getInt("id");
                 String title = rs.getString("title");
-                int authorId = rs.getInt("author_id");
+                Integer authorId = rs.getInt("author_id");
                 Author author = new AuthorDAOImpl().getAuthorById(authorId);
                 Book book = new Book(id, title, genre, author);
                 books.add(book);

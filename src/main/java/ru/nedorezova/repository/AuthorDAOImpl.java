@@ -37,7 +37,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM authors");){
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
+                Integer id = rs.getInt("id");
                 String name = rs.getString("name");
                 String surname = rs.getString("surname");
                 authors.add(new Author(id, name, surname));
