@@ -1,6 +1,5 @@
 package ru.nedorezova.servlet;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.nedorezova.repository.AuthorDAOImpl;
 import ru.nedorezova.model.Author;
 
@@ -21,7 +20,7 @@ public class AuthorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getPathInfo();
         if (id != null && !id.isEmpty()) {
-            getAuthorById(request, response, id.substring(1));
+            getAuthorById(request, response, Integer.parseInt(id.substring(1)));
         } else {
             getAllAuthors(request, response);
         }
@@ -39,28 +38,11 @@ public class AuthorServlet extends HttpServlet {
             dispatcher.forward(request, response);
     }
 
-    private void getAuthorById(HttpServletRequest request, HttpServletResponse response, String id) throws ServletException, IOException {
-        try (Connection connection = libraryConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM authors WHERE id = ?")) {
-            statement.setInt(1, Integer.parseInt(id));
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Author author = new Author(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("surname")
-                );
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(author);
-            response.setContentType("application/json");
-            response.getWriter().write(json);
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+    private void getAuthorById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
+        Author author = authorDAO.getAuthorById(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("author.jsp");
+        request.setAttribute("author", author);
+        dispatcher.forward(request, response);
     }
 
     private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

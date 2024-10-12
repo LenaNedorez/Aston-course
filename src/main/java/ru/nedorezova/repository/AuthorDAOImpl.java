@@ -35,7 +35,6 @@ public class AuthorDAOImpl implements AuthorDAO {
 
         List <Author> authors = new ArrayList<Author>();
         try(Connection connection = getConnection();
-
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM authors");){
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -50,5 +49,24 @@ public class AuthorDAOImpl implements AuthorDAO {
         }
 
         return authors;
+    }
+
+    public Author getAuthorById(Integer id) {
+        Author author = new Author();
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM authors WHERE id = ?");){
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                author = new Author(id, name, surname);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return author;
     }
 }
