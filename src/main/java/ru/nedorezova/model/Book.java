@@ -1,12 +1,12 @@
 package ru.nedorezova.model;
 
 public class Book {
-    private int id;
+    private Integer id;
     private String title;
     private String genre;
     private Author author;
 
-    public Book(int id, String title, String genre, Author author) {
+    public Book(Integer id, String title, String genre, Author author) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -16,11 +16,11 @@ public class Book {
     public Book() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

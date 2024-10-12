@@ -30,7 +30,7 @@ public class AuthorDAOImpl implements AuthorDAO {
         return connection;
     }
 
-
+    @Override
     public List<Author> getAllAuthors() {
         List <Author> authors = new ArrayList<>();
         try(Connection connection = getConnection();
@@ -50,6 +50,7 @@ public class AuthorDAOImpl implements AuthorDAO {
         return authors;
     }
 
+    @Override
     public Author getAuthorById(Integer id) {
         Author author = new Author();
         try(Connection connection = getConnection();
@@ -69,7 +70,7 @@ public class AuthorDAOImpl implements AuthorDAO {
         return author;
     }
 
-
+    @Override
     public void createAuthor(Author author) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO authors (name, surname) VALUES (?, ?)")) {
