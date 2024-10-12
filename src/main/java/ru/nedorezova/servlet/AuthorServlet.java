@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.*;
 import java.util.List;
 
 public class AuthorServlet extends HttpServlet {
 
-    private AuthorDAOImpl authorDAO;
+    private AuthorDAOImpl authorDAOIml;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,31 +31,26 @@ public class AuthorServlet extends HttpServlet {
     }
 
         private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            List<Author> listOfAuthors = authorDAO.getAllAuthors();
+            List<Author> listOfAuthors = authorDAOIml.getAllAuthors();
             request.setAttribute("listOfAuthors", listOfAuthors);
             RequestDispatcher dispatcher = request.getRequestDispatcher("list-of-authors.jsp");
             dispatcher.forward(request, response);
     }
 
     private void getAuthorById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
-        Author author = authorDAO.getAuthorById(id);
+        Author author = authorDAOIml.getAuthorById(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("author.jsp");
         request.setAttribute("author", author);
         dispatcher.forward(request, response);
     }
 
     private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try (Connection connection = libraryConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO authors (name, surname) VALUES (?, ?)")) {
-            String name = request.getParameter("name");
-            String surname = request.getParameter("surname");
-            statement.setString(1, "Author's name");
-            statement.setString(2, "Author's surname");
-            statement.executeUpdate();
-            response.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        Author newAuthor = new Author();
+        newAuthor.setName(name);
+        newAuthor.setSurname(surname);
+        authorDAOIml.createAuthor(newAuthor);
+        response.sendRedirect("list");
     }
 }

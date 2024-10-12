@@ -16,11 +16,11 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     public AuthorDAOImpl() {}
 
-    protected Connection getConnection() throws {
+    protected Connection getConnection() {
         Connection connection = null;
 
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(jdbcUrl,jdbcUser,jdbcPassword);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,8 +32,7 @@ public class AuthorDAOImpl implements AuthorDAO {
 
 
     public List<Author> getAllAuthors() {
-
-        List <Author> authors = new ArrayList<Author>();
+        List <Author> authors = new ArrayList<>();
         try(Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM authors");){
             ResultSet rs = preparedStatement.executeQuery();
@@ -68,5 +67,17 @@ public class AuthorDAOImpl implements AuthorDAO {
         }
 
         return author;
+    }
+
+
+    public void createAuthor(Author author) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO authors (name, surname) VALUES (?, ?)")) {
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setString(2, author.getSurname());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
