@@ -1,18 +1,19 @@
 package ru.nedorezova.servlet;
 
-import ru.nedorezova.dto.AuthorDto;
 import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.repository.AuthorDAOImpl;
 import ru.nedorezova.model.Author;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@WebServlet
 public class AuthorServlet extends HttpServlet {
 
     private AuthorDAOImpl authorDAOIml;
