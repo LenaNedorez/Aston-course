@@ -9,6 +9,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the AuthorDAO interface using JDBC to interact with a PostgreSQL database.
+ */
 public class AuthorDAOImpl implements AuthorDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthorDAOImpl.class);
@@ -19,6 +22,11 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     public AuthorDAOImpl() {}
 
+    /**
+     * Establishes a connection to the PostgreSQL database.
+     *
+     * @return A Connection object representing the database connection.
+     */
     protected Connection getConnection() {
         Connection connection = null;
 
@@ -33,6 +41,11 @@ public class AuthorDAOImpl implements AuthorDAO {
         return connection;
     }
 
+    /**
+     * Retrieves all authors from the database.
+     *
+     * @return A list of Author objects representing all authors in the database.
+     */
     @Override
     public List<Author> getAllAuthors() {
         List <Author> authors = new ArrayList<>();
@@ -53,6 +66,12 @@ public class AuthorDAOImpl implements AuthorDAO {
         return authors;
     }
 
+    /**
+     * Retrieves an author from the database by their ID.
+     *
+     * @param id The ID of the author to retrieve.
+     * @return An Author object representing the author with the specified ID.
+     */
     @Override
     public Author getAuthorById(Integer id) {
         Author author = new Author();
@@ -73,6 +92,11 @@ public class AuthorDAOImpl implements AuthorDAO {
         return author;
     }
 
+    /**
+     * Creates a new author in the database.
+     *
+     * @param author The Author object to create.
+     */
     @Override
     public void createAuthor(Author author) {
         try (Connection connection = getConnection();

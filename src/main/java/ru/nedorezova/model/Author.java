@@ -1,5 +1,8 @@
 package ru.nedorezova.model;
 
+/**
+ * Represents an author of a book.
+ */
 public class Author {
     private Integer id;
     private String name;

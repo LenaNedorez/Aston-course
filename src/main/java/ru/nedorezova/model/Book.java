@@ -1,5 +1,8 @@
 package ru.nedorezova.model;
 
+/**
+ * Represents a book.
+ */
 public class Book {
     private Integer id;
     private String title;

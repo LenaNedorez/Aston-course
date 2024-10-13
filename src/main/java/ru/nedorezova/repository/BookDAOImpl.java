@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the BookDAO interface using JDBC to interact with a PostgreSQL database.
+ */
 public class BookDAOImpl implements BookDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(BookDAOImpl.class);
@@ -20,6 +23,11 @@ public class BookDAOImpl implements BookDAO {
 
     public BookDAOImpl() {}
 
+    /**
+     * Establishes a connection to the PostgreSQL database.
+     *
+     * @return A Connection object representing the database connection.
+     */
     protected Connection getConnection() {
         Connection connection = null;
 
@@ -34,6 +42,11 @@ public class BookDAOImpl implements BookDAO {
         return connection;
     }
 
+    /**
+     * Retrieves all books from the database.
+     *
+     * @return A list of all books presented in the database.
+     */
     @Override
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
@@ -56,6 +69,12 @@ public class BookDAOImpl implements BookDAO {
         return books;
     }
 
+    /**
+     * Retrieves a book from the database by its ID.
+     *
+     * @param id The ID of the book to retrieve.
+     * @return A book object representing the book with the specified ID.
+     */
     @Override
     public Book getBookById(Integer id) {
         Book book = null;
@@ -77,6 +96,11 @@ public class BookDAOImpl implements BookDAO {
         return book;
     }
 
+    /**
+     * Creates a new book in the database.
+     *
+     * @param book The Book object to create.
+     */
     @Override
     public void createBook(Book book) {
         try (Connection connection = getConnection();
@@ -90,6 +114,12 @@ public class BookDAOImpl implements BookDAO {
         }
     }
 
+    /**
+     * Retrieves a list of books written by the specified author.
+     *
+     * @param author The author whose books to retrieve.
+     * @return A list of Book objects written by the specified author.
+     */
     @Override
     public List<Book> getBooksByAuthor(Author author) {
         List<Book> books = new ArrayList<>();
@@ -111,6 +141,12 @@ public class BookDAOImpl implements BookDAO {
         return books;
     }
 
+    /**
+     * Retrieves a list of books belonging to the specified genre.
+     *
+     * @param genre The genre to filter by.
+     * @return A list of Book objects that belong to the specified genre.
+     */
     @Override
     public List<Book> getBooksByGenre(String genre) {
         List<Book> books = new ArrayList<>();

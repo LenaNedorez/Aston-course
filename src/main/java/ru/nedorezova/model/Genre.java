@@ -2,6 +2,9 @@ package ru.nedorezova.model;
 
 import java.util.List;
 
+/**
+ * Represents a genre.
+ */
 public class Genre {
 
     private int id;

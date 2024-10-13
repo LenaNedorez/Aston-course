@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the GenreDAO interface using JDBC to interact with a PostgreSQL database.
+ */
 public class GenreDAOImpl implements GenreDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(GenreDAOImpl.class);
@@ -21,6 +24,11 @@ public class GenreDAOImpl implements GenreDAO {
 
     public GenreDAOImpl() {}
 
+    /**
+     * Establishes a connection to the PostgreSQL database.
+     *
+     * @return A Connection object representing the database connection.
+     */
     protected Connection getConnection() {
         Connection connection = null;
 
@@ -34,6 +42,12 @@ public class GenreDAOImpl implements GenreDAO {
         }
         return connection;
     }
+
+    /**
+     * Retrieves all genres from the database.
+     *
+     * @return A list of Genre objects representing all genres in the database.
+     */
     @Override
     public List<Genre> getAllGenres() {
         List<Genre> genres = new ArrayList<>();
@@ -53,6 +67,12 @@ public class GenreDAOImpl implements GenreDAO {
         return genres;
     }
 
+    /**
+     * Retrieves the genres associated with the given book.
+     *
+     * @param book The book to retrieve genres for.
+     * @return A list of Genre objects associated with the given book.
+     */
     @Override
     public List<Genre> getGenresByBook(Book book) {
         List<Genre> genres = new ArrayList<>();
