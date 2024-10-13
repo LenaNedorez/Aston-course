@@ -17,6 +17,10 @@ public class BookServlet extends HttpServlet {
 
     private BookDAOImpl bookDAO;
 
+    public BookServlet(BookDAOImpl bookDAO) {
+        this.bookDAO = bookDAO;
+    }
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -24,7 +28,7 @@ public class BookServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
         if (pathInfo != null && !pathInfo.isEmpty()) {
             if (pathInfo.startsWith("/byAuthor/")) {
@@ -40,25 +44,25 @@ public class BookServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         createBook(request, response);
     }
 
-    private void getAllBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void getAllBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Book> books = bookDAO.getAllBooks();
         request.setAttribute("books", books);
         RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void getBookById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
+    public void getBookById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
         Book book = bookDAO.getBookById(id);
         request.setAttribute("book", book);
         RequestDispatcher dispatcher = request.getRequestDispatcher("book.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void createBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void createBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String genre = request.getParameter("genre");
         Integer authorId = Integer.parseInt(request.getParameter("authorId"));
@@ -71,7 +75,7 @@ public class BookServlet extends HttpServlet {
         response.sendRedirect("books"); // Redirect to the book list
     }
 
-    private void getBooksByAuthor(HttpServletRequest request, HttpServletResponse response, String authorId) throws ServletException, IOException {
+    public void getBooksByAuthor(HttpServletRequest request, HttpServletResponse response, String authorId) throws ServletException, IOException {
         Author author = new AuthorDAOImpl().getAuthorById(Integer.parseInt(authorId));
         List<Book> books = bookDAO.getBooksByAuthor(author);
         request.setAttribute("books", books);
@@ -80,7 +84,7 @@ public class BookServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void getBooksByGenre(HttpServletRequest request, HttpServletResponse response, String genre) throws ServletException, IOException {
+    public void getBooksByGenre(HttpServletRequest request, HttpServletResponse response, String genre) throws ServletException, IOException {
         List<Book> books = bookDAO.getBooksByGenre(genre);
         request.setAttribute("books", books);
         request.setAttribute("genre", genre);
