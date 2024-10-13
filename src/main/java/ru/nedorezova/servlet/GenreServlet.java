@@ -17,6 +17,10 @@ public class GenreServlet extends HttpServlet {
 
     private GenreDAOImpl genreDAO;
 
+    public GenreServlet(GenreDAOImpl genreDAO) {
+        this.genreDAO = genreDAO;
+    }
+
     @Override
     public void init() throws ServletException {
         super.init();
