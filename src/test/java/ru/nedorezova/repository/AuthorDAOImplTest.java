@@ -1,8 +1,9 @@
+package ru.nedorezova.repository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.nedorezova.model.Author;
-import ru.nedorezova.repository.AuthorDAOImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
