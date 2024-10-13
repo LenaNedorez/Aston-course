@@ -1,54 +1,54 @@
-# Task 2 of Aston intensive course
+## Task 2 of Aston intensive course
 
-## Task description
+### Task description
 
 The task is to make a REST service. Use servlets and JDBC technologies, also there should be many to many, one to many connections.
 
-## Project description
+### Project description
 
-This project implements a REST API for a library, managing book, author and genre data using servlets and JDBC.
+This is a web application that allows you to manage your library: add authors, books, genres and search for information on them.
 
-## Description of the data model
+### Technologies
 
-#### Author (Author): 
-- id (int, primary key) 
-- first name (String) 
-- last name (String) 
-#### Book (Book): 
-- id (int, primary key) 
-- title (String) 
-- genre (String) 
-- author (Author, one-to-many) 
-#### Genre (Genre): 
-- id (int, primary key) 
-- title (String) 
-- book (Book, many-to-many)
+- Java: Programming language.
+- Servlet: Servlet API for handling HTTP requests.
+- JDBC: Interface for interacting with databases.
+- PostgreSQL: Relational database management system.
+- MapStruct: Library for automatically creating mappers.
+- SLF4J: Library for working with logging.
+- (Potentially) JSP - JavaServer Pages: Technology for creating dynamic web pages.
 
-## REST API
-1. Author:
+### Project structure
 
-- GET /authors: Returns a list of all authors.
-- GET /authors/{id}: Returns information about the author with the specified id.
-- POST /authors: Creates a new author.
-- PUT /authors/{id}: Updates the author with the specified id.
+- Model: Classes representing domain objects (Author, Book, Genre, AuthorDto, BookDto, GenreDto).
+- DAO: DAO interfaces (AuthorDAO, BookDAO, GenreDAO) and their implementations (AuthorDAOImpl, BookDAOImpl, GenreDAOImpl).
+- Servlet: Servlets (AuthorServlet, BookServlet, GenreServlet) for handling requests.
+- Mapper: Mapper interfaces (AuthorMapper, BookMapper, GenreMapper).
 
-2. Book:
+### Functionality
 
-- GET /books: Returns a list of all books.
-- GET /books/{id}: Returns information about the book with the specified id.
-- POST /books: Creates a new book.
-- PUT /books/{id}: Updates the book with the specified id.
-- DELETE /books/{id}: Deletes the book with the specified id.
+- Add Authors: Add new authors to the database.
+- Add Books: Add new books, including author and genre.
+- View All Books: Display a list of all books.
+- Search Books: Search books by author, genre, or title.
+- View Book Details: Display information about a book, including author, genre, and description.
+- View All Authors: Display a list of all authors.
+- View Author Details: Display information about an author, including a list of their books.
+- View All Genres: Display a list of all genres.
+- View Books by Genre: Display a list of all books of a specific genre.
 
-3. Genre:
+### Starting the project
 
-- GET /genres: Returns a list of all genres.
-- GET /genres/{id}: Returns information about the genre with the specified id.
-- GET /genres/{id}/books: Returns a list of books in the genre with the specified id.
+- Setup: Make sure you have PostgreSQL and Java installed.
+- Starting the server: Start the application server (e.g. Tomcat), configuring it to work with the web application.
 
-## Technologies
+### Small summary
+During the project, a REST service for library management was successfully developed. 
+The application is implemented on the basis of servlets and uses JDBC to interact with the PostgreSQL database. 
+The service provides functionality for working with authors, books and genres, 
+demonstrating the implementation of many-to-many (book - genre) and one-to-many (book - author) relationships.
 
-- Java Servlet API: Servlets for handling HTTP requests.
-- JDBC: Access to MySQL database.
-- JSON: Data format for data exchange.
-- Maven: Managing dependencies and building a project.
+### Thanks
+Thanks to Aston for providing an opportunity to write this project and to all the developers of the technologies used.
+And special thanks to the people who will read this and point out errors in the project.
+
