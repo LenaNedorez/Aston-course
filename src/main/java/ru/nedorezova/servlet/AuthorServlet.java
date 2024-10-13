@@ -1,5 +1,7 @@
 package ru.nedorezova.servlet;
 
+import ru.nedorezova.dto.AuthorDto;
+import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.repository.AuthorDAOImpl;
 import ru.nedorezova.model.Author;
 
@@ -44,7 +46,7 @@ public class AuthorServlet extends HttpServlet {
     public void getAuthorById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
         Author author = authorDAOIml.getAuthorById(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("author.jsp");
-        request.setAttribute("author", author);
+        request.setAttribute("author", AuthorMapper.INSTANCE.toDto(author));
         dispatcher.forward(request, response);
     }
 

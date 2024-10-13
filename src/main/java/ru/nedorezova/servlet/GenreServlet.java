@@ -1,5 +1,7 @@
 package ru.nedorezova.servlet;
 
+import ru.nedorezova.mappers.BookMapper;
+import ru.nedorezova.mappers.GenreMapper;
 import ru.nedorezova.model.Book;
 import ru.nedorezova.model.Genre;
 import ru.nedorezova.repository.BookDAOImpl;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GenreServlet extends HttpServlet {
 
@@ -39,7 +42,9 @@ public class GenreServlet extends HttpServlet {
 
     public void getAllGenres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Genre> genres = genreDAO.getAllGenres();
-        request.setAttribute("genres", genres);
+        request.setAttribute("genres", genres.stream()
+                .map(GenreMapper.INSTANCE::toDto)
+                .collect(Collectors.toList()));
         RequestDispatcher dispatcher = request.getRequestDispatcher("genres.jsp");
         dispatcher.forward(request, response);
     }
@@ -47,8 +52,10 @@ public class GenreServlet extends HttpServlet {
     public void getGenresByBook(HttpServletRequest request, HttpServletResponse response, String bookId) throws ServletException, IOException {
         Book book = new BookDAOImpl().getBookById(Integer.parseInt(bookId));
         List<Genre> genres = genreDAO.getGenresByBook(book);
-        request.setAttribute("genres", genres);
-        request.setAttribute("book", book);
+        request.setAttribute("genres", genres.stream()
+                .map(GenreMapper.INSTANCE::toDto)
+                .collect(Collectors.toList()));
+        request.setAttribute("book", BookMapper.INSTANCE.toDto(book));
         RequestDispatcher dispatcher = request.getRequestDispatcher("genres.jsp");
         dispatcher.forward(request, response);
     }

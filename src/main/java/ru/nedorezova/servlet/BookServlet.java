@@ -1,5 +1,7 @@
 package ru.nedorezova.servlet;
 
+import ru.nedorezova.mappers.AuthorMapper;
+import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.model.Author;
 import ru.nedorezova.model.Book;
 import ru.nedorezova.repository.AuthorDAOImpl;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookServlet extends HttpServlet {
 
@@ -50,14 +53,16 @@ public class BookServlet extends HttpServlet {
 
     public void getAllBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Book> books = bookDAO.getAllBooks();
-        request.setAttribute("books", books);
+        request.setAttribute("books", books.stream()
+                            .map(BookMapper.INSTANCE::toDto)
+                            .collect(Collectors.toList()));
         RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
         dispatcher.forward(request, response);
     }
 
     public void getBookById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
         Book book = bookDAO.getBookById(id);
-        request.setAttribute("book", book);
+        request.setAttribute("book", BookMapper.INSTANCE.toDto(book));
         RequestDispatcher dispatcher = request.getRequestDispatcher("book.jsp");
         dispatcher.forward(request, response);
     }
@@ -72,22 +77,25 @@ public class BookServlet extends HttpServlet {
         newBook.setGenre(genre);
         newBook.setAuthor(author);
         bookDAO.createBook(newBook);
-        response.sendRedirect("books"); // Redirect to the book list
+        response.sendRedirect("books");
     }
 
     public void getBooksByAuthor(HttpServletRequest request, HttpServletResponse response, String authorId) throws ServletException, IOException {
         Author author = new AuthorDAOImpl().getAuthorById(Integer.parseInt(authorId));
         List<Book> books = bookDAO.getBooksByAuthor(author);
-        request.setAttribute("books", books);
-        request.setAttribute("author", author);
+        request.setAttribute("books", books.stream()
+                .map(BookMapper.INSTANCE::toDto)
+                .collect(Collectors.toList()));
+        request.setAttribute("author", AuthorMapper.INSTANCE.toDto(author));
         RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
         dispatcher.forward(request, response);
     }
 
     public void getBooksByGenre(HttpServletRequest request, HttpServletResponse response, String genre) throws ServletException, IOException {
         List<Book> books = bookDAO.getBooksByGenre(genre);
-        request.setAttribute("books", books);
-        request.setAttribute("genre", genre);
+        request.setAttribute("books", books.stream()
+                .map(BookMapper.INSTANCE::toDto)
+                .collect(Collectors.toList()));
         RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
         dispatcher.forward(request, response);
     }
