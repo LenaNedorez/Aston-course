@@ -24,7 +24,7 @@ public class GenreServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
         if (pathInfo != null && !pathInfo.isEmpty() && pathInfo.startsWith("/byBook/")) {
             getGenresByBook(request, response, pathInfo.substring("/byBook/".length()));
@@ -33,14 +33,14 @@ public class GenreServlet extends HttpServlet {
         }
     }
 
-    private void getAllGenres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void getAllGenres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Genre> genres = genreDAO.getAllGenres();
         request.setAttribute("genres", genres);
         RequestDispatcher dispatcher = request.getRequestDispatcher("genres.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void getGenresByBook(HttpServletRequest request, HttpServletResponse response, String bookId) throws ServletException, IOException {
+    public void getGenresByBook(HttpServletRequest request, HttpServletResponse response, String bookId) throws ServletException, IOException {
         Book book = new BookDAOImpl().getBookById(Integer.parseInt(bookId));
         List<Genre> genres = genreDAO.getGenresByBook(book);
         request.setAttribute("genres", genres);

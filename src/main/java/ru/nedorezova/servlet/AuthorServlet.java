@@ -15,8 +15,12 @@ public class AuthorServlet extends HttpServlet {
 
     private AuthorDAOImpl authorDAOIml;
 
+    public AuthorServlet(AuthorDAOImpl authorDAOIml) {
+        this.authorDAOIml = authorDAOIml;
+    }
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getPathInfo();
         if (id != null && !id.isEmpty()) {
             getAuthorById(request, response, Integer.parseInt(id.substring(1)));
@@ -26,25 +30,25 @@ public class AuthorServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         createAuthor(request, response);
     }
 
-        private void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             List<Author> listOfAuthors = authorDAOIml.getAllAuthors();
             request.setAttribute("listOfAuthors", listOfAuthors);
             RequestDispatcher dispatcher = request.getRequestDispatcher("list-of-authors.jsp");
             dispatcher.forward(request, response);
     }
 
-    private void getAuthorById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
+    public void getAuthorById(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
         Author author = authorDAOIml.getAuthorById(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("author.jsp");
         request.setAttribute("author", author);
         dispatcher.forward(request, response);
     }
 
-    private void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void createAuthor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         Author newAuthor = new Author();
