@@ -1,20 +1,8 @@
-package ru.nedorezova.dao;
+package ru.nedorezova.repository;
 
-import ru.nedorezova.model.Author;
-import ru.nedorezova.model.Book;
+@Repository
+public interface BookRepository extends JpaRepository<Book, Integer> {
 
-import java.util.List;
-
-/**
- * Data Access Object (DAO) interface for managing book data.
- * This interface defines methods for retrieving and creating information about books.
- */
-public interface BookDAO {
-
-    List<Book> getAllBooks();
-    Book getBookById(Integer id);
-    void createBook(Book book);
-    List<Book> getBooksByAuthor(Author author);
-    List<Book> getBooksByGenre(String genre);
-
+    List<Book> findByAuthor(Author author);
+    List<Book> findByGenre(String genre);
 }
