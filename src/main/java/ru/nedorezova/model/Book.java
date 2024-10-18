@@ -11,7 +11,9 @@ package ru.nedorezova.model;
 @Entity
 @Table(name = "books")
 public class Book {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String genre;
