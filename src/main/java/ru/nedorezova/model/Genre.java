@@ -11,11 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "authors")
+@Table(name = "genres")
 public class Genre {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private List<Book> books;
 
 }
