@@ -1,4 +1,4 @@
-package ru.nedorezova.repository;
+package ru.nedorezova.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

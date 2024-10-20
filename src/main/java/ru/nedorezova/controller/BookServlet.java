@@ -1,11 +1,11 @@
-package ru.nedorezova.servlet;
+package ru.nedorezova.controller;
 
 import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.model.Author;
 import ru.nedorezova.model.Book;
-import ru.nedorezova.repository.AuthorDAOImpl;
-import ru.nedorezova.repository.BookDAOImpl;
+import ru.nedorezova.service.AuthorDAOImpl;
+import ru.nedorezova.service.BookDAOImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

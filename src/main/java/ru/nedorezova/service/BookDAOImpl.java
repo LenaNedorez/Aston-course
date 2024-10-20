@@ -1,4 +1,4 @@
-package ru.nedorezova.repository;
+package ru.nedorezova.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

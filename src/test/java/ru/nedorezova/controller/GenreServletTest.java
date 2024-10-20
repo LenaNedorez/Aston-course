@@ -1,4 +1,4 @@
-package ru.nedorezova.servlet;
+package ru.nedorezova.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,9 +6,8 @@ import org.mockito.Mockito;
 import ru.nedorezova.model.Author;
 import ru.nedorezova.model.Book;
 import ru.nedorezova.model.Genre;
-import ru.nedorezova.repository.BookDAOImpl;
-import ru.nedorezova.repository.GenreDAOImpl;
-import ru.nedorezova.servlet.GenreServlet;
+import ru.nedorezova.service.BookDAOImpl;
+import ru.nedorezova.service.GenreDAOImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

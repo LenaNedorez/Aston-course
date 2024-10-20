@@ -1,4 +1,4 @@
-package ru.nedorezova.repository;
+package ru.nedorezova.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +22,6 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     public AuthorDAOImpl() {}
 
-    /**
-     * Establishes a connection to the PostgreSQL database.
-     *
-     * @return A Connection object representing the database connection.
-     */
     protected Connection getConnection() {
         Connection connection = null;
 
