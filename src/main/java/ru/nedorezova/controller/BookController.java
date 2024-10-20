@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.mappers.BookMapper;
-import ru.nedorezova.model.Author;
-import ru.nedorezova.model.Book;
+import ru.nedorezova.entity.Author;
+import ru.nedorezova.entity.Book;
 import ru.nedorezova.service.AuthorService;
 import ru.nedorezova.service.BookService;
 
@@ -46,8 +46,7 @@ public class BookController {
     @PostMapping("/books")
     public String createBook(@RequestParam String title,
                              @RequestParam String genre,
-                             @RequestParam Integer authorId,
-                             Model model) {
+                             @RequestParam Integer authorId) {
         Author author = authorService.getAuthorById(authorId);
         Book newBook = new Book();
         newBook.setTitle(title);

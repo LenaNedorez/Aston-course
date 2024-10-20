@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.nedorezova.mappers.AuthorMapper;
-import ru.nedorezova.model.Author;
+import ru.nedorezova.entity.Author;
 import ru.nedorezova.service.AuthorService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -25,7 +26,10 @@ public class AuthorController {
     @GetMapping("/authors")
     public String getAllAuthors(Model model) {
         List<Author> listOfAuthors = authorService.getAllAuthors();
-        model.addAttribute("listOfAuthors", listOfAuthors);
+        model.addAttribute("listOfAuthors", listOfAuthors
+                .stream()
+                .map(AuthorMapper.INSTANCE::toDto)
+                .collect(Collectors.toList()));
         return "list-of-authors";
     }
 

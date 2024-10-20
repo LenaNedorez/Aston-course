@@ -2,8 +2,8 @@ package ru.nedorezova.service;
 
 import org.springframework.stereotype.Service;
 import ru.nedorezova.repository.BookRepository;
-import ru.nedorezova.model.Author;
-import ru.nedorezova.model.Book;
+import ru.nedorezova.entity.Author;
+import ru.nedorezova.entity.Book;
 
 import java.util.List;
 

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.mappers.GenreMapper;
-import ru.nedorezova.model.Book;
-import ru.nedorezova.model.Genre;
+import ru.nedorezova.entity.Book;
+import ru.nedorezova.entity.Genre;
 import ru.nedorezova.service.BookService;
 import ru.nedorezova.service.GenreService;
 
