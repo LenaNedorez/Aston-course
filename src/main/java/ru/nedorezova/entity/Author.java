@@ -6,6 +6,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an author entity.
+ *
+ * This class represents an author in the system, including their ID, name, surname,
+ * and a list of books they have written.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

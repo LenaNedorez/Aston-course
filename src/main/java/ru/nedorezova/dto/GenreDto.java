@@ -6,7 +6,10 @@ import java.util.List;
 
 
 /**
- * A data transfer object (DTO) representing a genre.
+ * Data transfer object representing a genre.
+ *
+ * This DTO is used to transfer information about book genre between layers, such as the
+ * controller and the service.
  */
 @Getter
 @Setter

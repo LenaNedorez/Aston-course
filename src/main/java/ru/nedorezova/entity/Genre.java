@@ -6,6 +6,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a genre entity.
+ *
+ * This class represents a genre in the system, including its ID, name, and a list
+ * of books that belong to this genre.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

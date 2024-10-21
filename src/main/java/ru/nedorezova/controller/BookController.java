@@ -21,6 +21,9 @@ import ru.nedorezova.service.BookService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for managing books.
+ */
 @Controller
 public class BookController {
 
@@ -28,12 +31,24 @@ public class BookController {
     private final AuthorService authorService;
     private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 
+    /**
+     * Constructs a new BookController with the given BookService and AuthorService.
+     *
+     * @param bookService   The BookService to use.
+     * @param authorService The AuthorService to use.
+     */
     @Autowired
     public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
     }
 
+    /**
+     * Gets a list of all books and adds it to the model.
+     *
+     * @param model The model to add the books to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/books")
     public String getAllBooks(Model model) {
         List<Book> books = bookService.getAllBooks();
@@ -43,6 +58,14 @@ public class BookController {
         return "books";
     }
 
+
+    /**
+     * Gets a book by ID and adds it to the model.
+     *
+     * @param id   The ID of the book to retrieve.
+     * @param model The model to add the book to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/books/{id}")
     public String getBookById(@PathVariable Integer id, Model model) {
         Book book = null;
@@ -55,6 +78,14 @@ public class BookController {
         return "book";
     }
 
+    /**
+     * Creates a new book and redirects to the list of books.
+     *
+     * @param title   The title of the new book.
+     * @param genre   The genre of the new book.
+     * @param authorId The ID of the author of the new book.
+     * @return The redirect URL.
+     */
     @PostMapping("/books")
     public String createBook(@RequestParam String title,
                              @RequestParam String genre,
@@ -73,6 +104,13 @@ public class BookController {
         return "redirect:/books";
     }
 
+    /**
+     * Gets a list of books by author ID and adds it to the model.
+     *
+     * @param authorId The ID of the author.
+     * @param model    The model to add the books to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/books/byAuthor/{authorId}")
     public String getBooksByAuthor(@PathVariable Integer authorId, Model model) {
         Author author = null;
@@ -89,6 +127,13 @@ public class BookController {
         return "books";
     }
 
+    /**
+     * Gets a list of books by genre and adds it to the model.
+     *
+     * @param genre The genre of the books to retrieve.
+     * @param model The model to add the books to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/books/byGenre/{genre}")
     public String getBooksByGenre(@PathVariable String genre, Model model) {
         List<Book> books = bookService.getBooksByGenre(genre);

@@ -1,54 +1,59 @@
-## Task 2 of Aston intensive course
+## Task 3 of Aston intensive course
 
 ### Task description
 
-The task is to make a REST service. Use servlets and JDBC technologies, also there should be many to many, one to many connections.
+The task is to upgrade the project which was made before (task 2). 
+In this project there can be used Spring, Hibernate etc technologies except fot Spring Boot.
 
 ### Project description
 
-This is a web application that allows you to manage your library: add authors, books, genres and search for information on them.
+This project implements a small Library System using Spring MVC. It allows to manage books, 
+authors, and genres with basic CRUD operations.
+
+### Features
+
+    Authors:
+        Create new authors
+        Retrieve all authors
+        Retrieve an author by ID
+    Books:
+        Create new books
+        Retrieve all books
+        Retrieve a book by ID
+        Retrieve books by author
+        Retrieve books by genre
+    Genres:
+        Retrieve all genres
+        Retrieve a genre by ID
+        Retrieve genres associated with a book
 
 ### Technologies
 
-- Java: Programming language.
-- Servlet: Servlet API for handling HTTP requests.
-- JDBC: Interface for interacting with databases.
-- PostgreSQL: Relational database management system.
-- MapStruct: Library for automatically creating mappers.
-- SLF4J: Library for working with logging.
-- (Potentially) JSP - JavaServer Pages: Technology for creating dynamic web pages.
+- Spring MVC
+- Spring Data JPA
+- Hibernate
+- Postgres
+- Lombok
+- MapStruct
+- SLF4J
+- Junit 5
+- Mockito
 
-### Project structure
+### Getting Started
 
-- Model: Classes representing domain objects (Author, Book, Genre, AuthorDto, BookDto, GenreDto).
-- DAO: DAO interfaces (AuthorDAO, BookDAO, GenreDAO) and their implementations (AuthorDAOImpl, BookDAOImpl, GenreDAOImpl).
-- Servlet: Servlets (AuthorServlet, BookServlet, GenreServlet) for handling requests.
-- Mapper: Mapper interfaces (AuthorMapper, BookMapper, GenreMapper).
 
-### Functionality
+- Clone the repository: ```git clone https://github.com/your-username/book-management-system.git```
+- Navigate to the project directory: ```cd book-management-system```
+- Build the project: ```mvn clean install```
+- Run the application: ```mvn spring-boot:run```
+- Access the application: ```Open your browser and go to http://localhost:8080/```
 
-- Add Authors: Add new authors to the database.
-- Add Books: Add new books, including author and genre.
-- View All Books: Display a list of all books.
-- Search Books: Search books by author, genre, or title.
-- View Book Details: Display information about a book, including author, genre, and description.
-- View All Authors: Display a list of all authors.
-- View Author Details: Display information about an author, including a list of their books.
-- View All Genres: Display a list of all genres.
-- View Books by Genre: Display a list of all books of a specific genre.
+### Running Tests
+You can run the unit tests using the following command: ```mvn test```
 
-### Starting the project
+### Contributing and thanks
 
-- Setup: Make sure you have PostgreSQL and Java installed.
-- Starting the server: Start the application server (e.g. Tomcat), configuring it to work with the web application.
-
-### Small summary
-During the project, a REST service for library management was successfully developed. 
-The application is implemented on the basis of servlets and uses JDBC to interact with the PostgreSQL database. 
-The service provides functionality for working with authors, books and genres, 
-demonstrating the implementation of many-to-many (book - genre) and one-to-many (book - author) relationships.
-
-### Thanks
-Thanks to Aston for providing an opportunity to write this project and to all the developers of the technologies used.
+Contributions are welcome! Feel free to submit pull requests or open issues.
+Thanks to Aston for providing an opportunity to write this project 
+and to all the developers of the technologies used. 
 And special thanks to the people who will read this and point out errors in the project.
-

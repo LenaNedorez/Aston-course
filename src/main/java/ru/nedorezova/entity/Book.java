@@ -6,6 +6,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a book entity.
+ *
+ * This class represents a book in the system, including its ID, title,
+ * author, and a list of genres it belongs to.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

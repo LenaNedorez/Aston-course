@@ -19,6 +19,9 @@ import ru.nedorezova.service.GenreService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for managing genres.
+ */
 @Controller
 public class GenreController {
 
@@ -26,12 +29,24 @@ public class GenreController {
     private final BookService bookService;
     private static final Logger logger = LoggerFactory.getLogger(GenreController.class);
 
+    /**
+     * Constructs a new GenreController with the given GenreService and BookService.
+     *
+     * @param genreService The GenreService to use.
+     * @param bookService  The BookService to use.
+     */
     @Autowired
     public GenreController(GenreService genreService, BookService bookService) {
         this.genreService = genreService;
         this.bookService = bookService;
     }
 
+    /**
+     * Gets a list of all genres and adds it to the model.
+     *
+     * @param model The model to add the genres to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/genres")
     public String getAllGenres(Model model) {
         List<Genre> genres = genreService.getAllGenres();
@@ -41,6 +56,13 @@ public class GenreController {
         return "genres";
     }
 
+    /**
+     * Gets a genre by ID and adds it to the model.
+     *
+     * @param id   The ID of the genre to retrieve.
+     * @param model The model to add the genre to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/genres/{id}")
     public String getGenreById(@PathVariable Integer id, Model model) {
         Genre genre = null;
@@ -53,6 +75,13 @@ public class GenreController {
         return "genres";
     }
 
+    /**
+     * Gets a list of genres associated with a specific book and adds it to the model.
+     *
+     * @param bookId The ID of the book to retrieve genres for.
+     * @param model  The model to add the genres to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/genres/byBook/{bookId}")
     public String getGenresByBook(@PathVariable Integer bookId, Model model) {
         Book book = null;

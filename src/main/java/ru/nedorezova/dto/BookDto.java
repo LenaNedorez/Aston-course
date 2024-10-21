@@ -7,7 +7,10 @@ import ru.nedorezova.entity.Genre;
 import java.util.List;
 
 /**
- * A data transfer object (DTO) representing a book.
+ * Data transfer object representing a book.
+ *
+ * This DTO is used to transfer book information between layers, such as the
+ * controller and the service.
  */
 @Getter
 @Setter

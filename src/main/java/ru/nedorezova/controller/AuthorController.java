@@ -17,18 +17,31 @@ import ru.nedorezova.service.AuthorService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Controller for managing authors.
+ */
 @Controller
 public class AuthorController {
 
     private final AuthorService authorService;
     private static final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
+    /**
+     * Constructs a new AuthorController with the given AuthorService.
+     *
+     * @param authorService The AuthorService to use.
+     */
     @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
 
+    /**
+     * Gets a list of all authors and adds it to the model.
+     *
+     * @param model The model to add the authors to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/authors")
     public String getAllAuthors(Model model) {
         List<Author> listOfAuthors = authorService.getAllAuthors();
@@ -39,6 +52,13 @@ public class AuthorController {
         return "list-of-authors";
     }
 
+    /**
+     * Gets an author by ID and adds it to the model.
+     *
+     * @param id   The ID of the author to retrieve.
+     * @param model The model to add the author to.
+     * @return The name of the view to render.
+     */
     @GetMapping("/authors/{id}")
     public String getAuthorById(@PathVariable Integer id, Model model) {
         Author author = null;
@@ -51,6 +71,13 @@ public class AuthorController {
         return "author";
     }
 
+    /**
+     * Creates a new author and redirects to the list of authors.
+     *
+     * @param name   The name of the new author.
+     * @param surname The surname of the new author.
+     * @return The redirect URL.
+     */
     @PostMapping("/authors")
     public String createAuthor(@RequestParam String name, @RequestParam String surname) {
         Author newAuthor = new Author();
