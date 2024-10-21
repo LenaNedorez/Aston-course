@@ -24,4 +24,9 @@ public class Author {
     @OneToMany(mappedBy = "author")
     private List<Book> bookList = new ArrayList<>();
 
+    public Author(Integer id, String name, String surname) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+    }
 }

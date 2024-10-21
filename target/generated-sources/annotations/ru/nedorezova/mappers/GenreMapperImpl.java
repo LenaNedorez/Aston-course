@@ -7,7 +7,7 @@ import ru.nedorezova.entity.Genre;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-20T22:31:44+0300",
+    date = "2024-10-21T15:23:32+0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
