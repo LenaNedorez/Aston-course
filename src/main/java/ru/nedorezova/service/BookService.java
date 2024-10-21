@@ -6,6 +6,9 @@ import ru.nedorezova.repository.BookRepository;
 import ru.nedorezova.entity.Author;
 import ru.nedorezova.entity.Book;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -18,6 +21,8 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Constructs a new BookService with the given BookRepository.
@@ -76,5 +81,18 @@ public class BookService {
      */
     public List<Book> getBooksByGenre(String genre) {
         return bookRepository.findByGenre(genre);
+    }
+
+    /**
+     * Retrieves a list of books with the given title using a JPQL query.
+     *
+     * @param title The title of the books to retrieve.
+     * @return A list of books with the given title.
+     */
+    public List<Book> getBooksByTitle(String title) {
+        TypedQuery<Book> query = entityManager.createQuery(
+                "SELECT b FROM Book b WHERE b.title LIKE :title", Book.class);
+        query.setParameter("title", "%" + title + "%");
+        return query.getResultList();
     }
 }

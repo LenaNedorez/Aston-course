@@ -142,4 +142,20 @@ public class BookController {
                 .collect(Collectors.toList()));
         return "books";
     }
+
+    /**
+     * Gets a list of books by title and adds it to the model.
+     *
+     * @param title The title of the books to retrieve.
+     * @param model The model to add the books to.
+     * @return The name of the view to render.
+     */
+    @GetMapping("/books/byTitle/{title}")
+    public String getBooksByTitle(@PathVariable String title, Model model) {
+        List<Book> books = bookService.getBooksByTitle(title);
+        model.addAttribute("books", books.stream()
+                .map(BookMapper.INSTANCE::toDto)
+                .collect(Collectors.toList()));
+        return "books";
+    }
 }
