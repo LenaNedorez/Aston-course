@@ -1,11 +1,15 @@
 package ru.nedorezova.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.nedorezova.exception.AuthorNotFoundException;
 import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.entity.Author;
@@ -21,7 +25,9 @@ public class BookController {
 
     private final BookService bookService;
     private final AuthorService authorService;
+    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 
+    @Autowired
     public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
@@ -47,7 +53,12 @@ public class BookController {
     public String createBook(@RequestParam String title,
                              @RequestParam String genre,
                              @RequestParam Integer authorId) {
-        Author author = authorService.getAuthorById(authorId);
+        Author author = null;
+        try {
+            author = authorService.getAuthorById(authorId);
+        } catch (AuthorNotFoundException e) {
+            logger.error("Error fetching author with ID: {}", authorId, e);
+        }
         Book newBook = new Book();
         newBook.setTitle(title);
         newBook.setGenre(genre);
@@ -58,7 +69,12 @@ public class BookController {
 
     @GetMapping("/books/byAuthor/{authorId}")
     public String getBooksByAuthor(@PathVariable Integer authorId, Model model) {
-        Author author = authorService.getAuthorById(authorId);
+        Author author = null;
+        try {
+            author = authorService.getAuthorById(authorId);
+        } catch (AuthorNotFoundException e) {
+            logger.error("Error fetching author with ID: {}", authorId, e);
+        }
         List<Book> books = bookService.getBooksByAuthor(author);
         model.addAttribute("books", books.stream()
                 .map(BookMapper.INSTANCE::toDto)

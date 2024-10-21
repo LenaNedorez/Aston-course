@@ -1,6 +1,7 @@
 package ru.nedorezova.service;
 
 import org.springframework.stereotype.Service;
+import ru.nedorezova.exception.AuthorNotFoundException;
 import ru.nedorezova.repository.AuthorRepository;
 import ru.nedorezova.entity.Author;
 
@@ -19,8 +20,8 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public Author getAuthorById(Integer id) {
-        return authorRepository.findById(id).orElse(null);
+    public Author getAuthorById(Integer id) throws AuthorNotFoundException {
+        return authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException("Author not found"));
     }
 
     public Author createAuthor(Author author) {
