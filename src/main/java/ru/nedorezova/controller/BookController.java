@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.nedorezova.exception.AuthorNotFoundException;
+import ru.nedorezova.exception.BookNotFoundException;
 import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.entity.Author;
@@ -44,7 +45,12 @@ public class BookController {
 
     @GetMapping("/books/{id}")
     public String getBookById(@PathVariable Integer id, Model model) {
-        Book book = bookService.getBookById(id);
+        Book book = null;
+        try {
+            book = bookService.getBookById(id);
+        } catch (BookNotFoundException e) {
+            logger.error("Error fetching book with ID: {}", id, e);
+        }
         model.addAttribute("book", BookMapper.INSTANCE.toDto(book));
         return "book";
     }

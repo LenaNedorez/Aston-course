@@ -1,6 +1,7 @@
 package ru.nedorezova.service;
 
 import org.springframework.stereotype.Service;
+import ru.nedorezova.exception.BookNotFoundException;
 import ru.nedorezova.repository.BookRepository;
 import ru.nedorezova.entity.Author;
 import ru.nedorezova.entity.Book;
@@ -20,8 +21,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book getBookById(Integer id) {
-        return bookRepository.findById(id).orElse(null);
+    public Book getBookById(Integer id) throws BookNotFoundException {
+        return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found"));
     }
 
     public Book createBook(Book book) {

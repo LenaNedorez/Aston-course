@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.nedorezova.exception.BookNotFoundException;
+import ru.nedorezova.exception.GenreNotFoundException;
 import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.mappers.GenreMapper;
 import ru.nedorezova.entity.Book;
@@ -39,9 +41,26 @@ public class GenreController {
         return "genres";
     }
 
+    @GetMapping("/genres/{id}")
+    public String getGenreById(@PathVariable Integer id, Model model) {
+        Genre genre = null;
+        try {
+            genre = genreService.getGenreById(id);
+        } catch (GenreNotFoundException e) {
+            logger.error("Error fetching genre with ID: {}", id, e);
+        }
+        model.addAttribute("genre", GenreMapper.INSTANCE.toDto(genre));
+        return "genres";
+    }
+
     @GetMapping("/genres/byBook/{bookId}")
     public String getGenresByBook(@PathVariable Integer bookId, Model model) {
-        Book book = bookService.getBookById(bookId);
+        Book book = null;
+        try {
+            book = bookService.getBookById(bookId);
+        } catch (BookNotFoundException e) {
+            logger.error("Error fetching book with ID: {}", bookId, e);
+        }
         List<Genre> genres = genreService.getGenresByBook(book);
         model.addAttribute("genres", genres.stream()
                 .map(GenreMapper.INSTANCE::toDto)
