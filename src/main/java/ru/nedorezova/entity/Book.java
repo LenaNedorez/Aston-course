@@ -10,7 +10,7 @@ import java.util.List;
  * Represents a book entity.
  *
  * This class represents a book in the system, including its ID, title,
- * author, and a list of genres it belongs to.
+ * author, a list of genres it belongs to and short description.
  */
 @Getter
 @Setter
@@ -44,5 +44,16 @@ public class Book {
         this.title = title;
         this.genre = genre;
         this.author = author;
+    }
+
+    @Embedded
+    private Description description;
+
+    @Embeddable
+    public class Description {
+
+        private int numberOfPages;
+        private String Description;
+
     }
 }
