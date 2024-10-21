@@ -33,4 +33,10 @@ public class Book {
     )
     List<Genre> genres = new ArrayList<>();
 
+    public Book(Integer id, String title, String genre, Author author) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+        this.author = author;
+    }
 }

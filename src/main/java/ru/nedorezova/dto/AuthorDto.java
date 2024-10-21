@@ -21,4 +21,9 @@ public class AuthorDto {
     private String surname;
     private List<Book> bookList;
 
+    public AuthorDto(Integer id, String name, String surname) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+    }
 }
