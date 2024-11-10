@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "authors")
+@Table(name = "authors", schema="schema.sql")
 public class Author {
 
     @Id

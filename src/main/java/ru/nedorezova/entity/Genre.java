@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
+@Table(name = "genres", schema="schema.sql")
 public class Genre {
 
     @Id
