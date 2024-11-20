@@ -16,14 +16,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@RequiredArgsConstructor
 public class GenreDto {
 
     private int id;
     private String name;
     private List<Book> books;
 
-    public GenreDto(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

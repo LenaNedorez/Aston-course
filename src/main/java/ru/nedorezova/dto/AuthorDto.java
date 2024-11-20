@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@RequiredArgsConstructor
 public class AuthorDto {
 
     private Integer id;
@@ -22,9 +23,4 @@ public class AuthorDto {
     private String surname;
     private List<Book> bookList;
 
-    public AuthorDto(Integer id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-    }
 }

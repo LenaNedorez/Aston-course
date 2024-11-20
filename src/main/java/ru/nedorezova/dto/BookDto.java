@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@RequiredArgsConstructor
 public class BookDto {
 
     private Integer id;
@@ -25,10 +26,4 @@ public class BookDto {
     private Author author;
     List<Genre> genres;
 
-    public BookDto(Integer id, String title, String genre, Author author) {
-        this.id = id;
-        this.title = title;
-        this.genre = genre;
-        this.author = author;
-    }
 }
