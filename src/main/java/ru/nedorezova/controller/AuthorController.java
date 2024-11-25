@@ -2,11 +2,8 @@ package ru.nedorezova.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nedorezova.dto.AuthorDto;
 import ru.nedorezova.exception.AuthorNotFoundException;
@@ -71,12 +68,18 @@ public class AuthorController {
      * @param authorDto   The Dto of the new author.
      * @return The redirect URL.
      */
-    @PostMapping("/authors")
+    @PostMapping("/new")
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto) {
         Author newAuthor = new Author();
         newAuthor.setName(authorDto.getName());
         newAuthor.setSurname(authorDto.getSurname());
         Author createdAuthor = authorService.createAuthor(newAuthor);
         return ResponseEntity.status(HttpStatus.CREATED).body(AuthorMapper.INSTANCE.toDto(createdAuthor));
+    }
+
+    @ExceptionHandler(AuthorNotFoundException.class)
+    public ResponseEntity<String> handleAuthorNotFoundException(AuthorNotFoundException ex) {
+        logger.error("Author wasn't found:", ex);
+        return ResponseEntity.notFound().build();
     }
 }

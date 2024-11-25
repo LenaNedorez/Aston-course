@@ -7,7 +7,7 @@ import ru.nedorezova.entity.Genre;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-20T13:09:11+0300",
+    date = "2024-11-25T11:37:19+0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -19,10 +19,7 @@ public class GenreMapperImpl implements GenreMapper {
             return null;
         }
 
-        int id = 0;
-        String name = null;
-
-        GenreDto genreDto = new GenreDto( id, name );
+        GenreDto genreDto = new GenreDto();
 
         return genreDto;
     }

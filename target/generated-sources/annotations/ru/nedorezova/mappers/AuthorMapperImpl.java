@@ -7,7 +7,7 @@ import ru.nedorezova.entity.Author;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-20T13:09:11+0300",
+    date = "2024-11-25T11:37:19+0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -19,11 +19,7 @@ public class AuthorMapperImpl implements AuthorMapper {
             return null;
         }
 
-        Integer id = null;
-        String name = null;
-        String surname = null;
-
-        AuthorDto authorDto = new AuthorDto( id, name, surname );
+        AuthorDto authorDto = new AuthorDto();
 
         return authorDto;
     }

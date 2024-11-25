@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@RequiredArgsConstructor
 public class AuthorDto {
 
     private Integer id;

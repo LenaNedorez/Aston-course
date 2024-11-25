@@ -1,67 +1,118 @@
 package ru.nedorezova.controller;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.ui.Model;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import ru.nedorezova.dto.GenreDto;
-import ru.nedorezova.entity.Author;
 import ru.nedorezova.entity.Book;
 import ru.nedorezova.entity.Genre;
 import ru.nedorezova.exception.BookNotFoundException;
 import ru.nedorezova.exception.GenreNotFoundException;
+import ru.nedorezova.mappers.GenreMapper;
 import ru.nedorezova.service.BookService;
 import ru.nedorezova.service.GenreService;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class GenreControllerTest {
 
-    private final GenreService genreService = Mockito.mock(GenreService.class);
-    private final BookService bookService = Mockito.mock(BookService.class);
-    private final GenreController genreController = new GenreController(genreService, bookService);
+    @Mock
+    private GenreService genreService;
+
+    @Mock
+    private BookService bookService;
+
+    @Mock
+    private GenreMapper genreMapper;
+
+    @InjectMocks
+    private GenreController genreController;
+
 
     @Test
-    public void getAllGenres_shouldReturnListOfGenres() {
-        when(genreService.getAllGenres()).thenReturn(Arrays.asList(
-                new Genre(1, "Genre 1"),
-                new Genre(2, "Genre 2")
-        ));
+    void getAllGenres() {
+        List<Genre> genres = Arrays.asList(new Genre(), new Genre());
+        List<GenreDto> genreDtos = Arrays.asList(new GenreDto(), new GenreDto());
 
-        Model model = Mockito.mock(Model.class);
-        String viewName = genreController.getAllGenres(model);
+        when(genreService.getAllGenres()).thenReturn(genres);
+        when(genreMapper.toDto(any(Genre.class))).thenReturn(new GenreDto());
+
+        ResponseEntity<List<GenreDto>> response = genreController.getAllGenres();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(genreDtos.size(), response.getBody().size());
         verify(genreService, times(1)).getAllGenres();
-        assertEquals("genres", viewName);
+        verify(genreMapper, times(genres.size())).toDto(any(Genre.class));
     }
 
     @Test
-    public void getGenreById_shouldReturnGenre() throws GenreNotFoundException {
-        Genre genre = new Genre(1, "Genre Name");
-        GenreDto genreDto = new GenreDto(1, "Genre Name");
+    void getGenreById_found() throws GenreNotFoundException {
+        Genre genre = new Genre();
+        genre.setId(1);
+        GenreDto genreDto = new GenreDto();
+
         when(genreService.getGenreById(1)).thenReturn(genre);
+        when(genreMapper.toDto(genre)).thenReturn(genreDto);
 
-        Model model = Mockito.mock(Model.class);
-        String viewName = genreController.getGenreById(1, model);
+        ResponseEntity<GenreDto> response = genreController.getGenreById(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(genreDto, response.getBody());
         verify(genreService, times(1)).getGenreById(1);
-        assertEquals("genres", viewName);
+        verify(genreMapper, times(1)).toDto(genre);
     }
 
     @Test
-    public void getGenresByBook_shouldReturnListOfGenresByBook() throws BookNotFoundException {
-        Book book = new Book(1, "Book Title", "Genre", new Author(1, "Author Name", "Author Surname"));
+    void getGenreById_notFound() throws GenreNotFoundException {
+        when(genreService.getGenreById(1)).thenThrow(new GenreNotFoundException("Genre with id 1 not found"));
+
+        ResponseEntity<GenreDto> response = genreController.getGenreById(1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(genreService, times(1)).getGenreById(1);
+    }
+
+    @Test
+    void getGenresByBook_found() throws BookNotFoundException {
+        Book book = new Book();
+        book.setId(1);
+        List<Genre> genres = Arrays.asList(new Genre(), new Genre());
+        List<GenreDto> genreDtos = Arrays.asList(new GenreDto(), new GenreDto());
 
         when(bookService.getBookById(1)).thenReturn(book);
-        when(genreService.getGenresByBook(book)).thenReturn(Arrays.asList(
-                new Genre(1, "Genre 1"),
-                new Genre(2, "Genre 2")
-        ));
+        when(genreService.getGenresByBook(book)).thenReturn(genres);
+        when(genreMapper.toDto(any(Genre.class))).thenReturn(new GenreDto());
 
-        Model model = Mockito.mock(Model.class);
-        String viewName = genreController.getGenresByBook(1, model);
+        ResponseEntity<List<GenreDto>> response = genreController.getGenresByBook(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(genreDtos.size(), response.getBody().size());
         verify(bookService, times(1)).getBookById(1);
         verify(genreService, times(1)).getGenresByBook(book);
-        assertEquals("genres", viewName);
+        verify(genreMapper, times(genres.size())).toDto(any(Genre.class));
     }
+
+    @Test
+    void getGenresByBook_bookNotFound() throws BookNotFoundException {
+        when(bookService.getBookById(1)).thenThrow(new BookNotFoundException("Book with id 1 not found"));
+
+        ResponseEntity<List<GenreDto>> response = genreController.getGenresByBook(1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(bookService, times(1)).getBookById(1);
+        verify(genreService, never()).getGenresByBook(any(Book.class));
+    }
+
 }
