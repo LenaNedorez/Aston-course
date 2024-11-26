@@ -31,6 +31,7 @@ authors, and genres with basic CRUD operations.
 
 - Spring MVC
 - Spring Data JPA
+- Spring Boot
 - Hibernate
 - Postgres
 - Lombok
