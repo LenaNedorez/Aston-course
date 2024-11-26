@@ -39,10 +39,11 @@ public class AuthorController {
      * @return The name of the view to render.
      */
     @GetMapping("/")
-    public List<AuthorDto> getAllAuthors() {
-        return authorService.getAllAuthors().stream()
+    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
+        List<AuthorDto> allAuthors = authorService.getAllAuthors().stream()
                 .map(AuthorMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(allAuthors);
     }
 
     /**

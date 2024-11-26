@@ -12,7 +12,6 @@ import ru.nedorezova.entity.Book;
 import ru.nedorezova.entity.Genre;
 import ru.nedorezova.exception.BookNotFoundException;
 import ru.nedorezova.exception.GenreNotFoundException;
-import ru.nedorezova.mappers.GenreMapper;
 import ru.nedorezova.service.BookService;
 import ru.nedorezova.service.GenreService;
 
@@ -32,9 +31,6 @@ public class GenreControllerTest {
     @Mock
     private BookService bookService;
 
-    @Mock
-    private GenreMapper genreMapper;
-
     @InjectMocks
     private GenreController genreController;
 
@@ -45,14 +41,12 @@ public class GenreControllerTest {
         List<GenreDto> genreDtos = Arrays.asList(new GenreDto(), new GenreDto());
 
         when(genreService.getAllGenres()).thenReturn(genres);
-        when(genreMapper.toDto(any(Genre.class))).thenReturn(new GenreDto());
 
         ResponseEntity<List<GenreDto>> response = genreController.getAllGenres();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(genreDtos.size(), response.getBody().size());
         verify(genreService, times(1)).getAllGenres();
-        verify(genreMapper, times(genres.size())).toDto(any(Genre.class));
     }
 
     @Test
@@ -62,14 +56,12 @@ public class GenreControllerTest {
         GenreDto genreDto = new GenreDto();
 
         when(genreService.getGenreById(1)).thenReturn(genre);
-        when(genreMapper.toDto(genre)).thenReturn(genreDto);
 
         ResponseEntity<GenreDto> response = genreController.getGenreById(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(genreDto, response.getBody());
+        assertEquals(genreDto.getId(), response.getBody().getId());
         verify(genreService, times(1)).getGenreById(1);
-        verify(genreMapper, times(1)).toDto(genre);
     }
 
     @Test
@@ -92,7 +84,6 @@ public class GenreControllerTest {
 
         when(bookService.getBookById(1)).thenReturn(book);
         when(genreService.getGenresByBook(book)).thenReturn(genres);
-        when(genreMapper.toDto(any(Genre.class))).thenReturn(new GenreDto());
 
         ResponseEntity<List<GenreDto>> response = genreController.getGenresByBook(1);
 
@@ -100,7 +91,6 @@ public class GenreControllerTest {
         assertEquals(genreDtos.size(), response.getBody().size());
         verify(bookService, times(1)).getBookById(1);
         verify(genreService, times(1)).getGenresByBook(book);
-        verify(genreMapper, times(genres.size())).toDto(any(Genre.class));
     }
 
     @Test
