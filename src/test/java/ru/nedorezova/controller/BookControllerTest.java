@@ -12,7 +12,6 @@ import ru.nedorezova.entity.Author;
 import ru.nedorezova.entity.Book;
 import ru.nedorezova.exception.AuthorNotFoundException;
 import ru.nedorezova.exception.BookNotFoundException;
-import ru.nedorezova.mappers.BookMapper;
 import ru.nedorezova.service.AuthorService;
 import ru.nedorezova.service.BookService;
 
@@ -33,9 +32,6 @@ public class BookControllerTest {
     @Mock
     private AuthorService authorService;
 
-    @Mock
-    private BookMapper bookMapper;
-
     @InjectMocks
     private BookController bookController;
 
@@ -45,31 +41,25 @@ public class BookControllerTest {
         List<BookDto> bookDtos = Arrays.asList(new BookDto(), new BookDto());
 
         when(bookService.getAllBooks()).thenReturn(books);
-        when(bookMapper.toDto(any(Book.class))).thenReturn(new BookDto()); // Mock mapper behavior
 
         ResponseEntity<List<BookDto>> response = bookController.getAllBooks();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(bookDtos.size(), response.getBody().size());
         verify(bookService, times(1)).getAllBooks();
-        verify(bookMapper, times(books.size())).toDto(any(Book.class));
     }
 
     @Test
     void getBookById_found() throws BookNotFoundException {
         Book book = new Book();
         book.setId(1);
-        BookDto bookDto = new BookDto();
 
         when(bookService.getBookById(1)).thenReturn(book);
-        when(bookMapper.toDto(book)).thenReturn(bookDto);
 
         ResponseEntity<BookDto> response = bookController.getBookById(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bookDto, response.getBody());
         verify(bookService, times(1)).getBookById(1);
-        verify(bookMapper, times(1)).toDto(book);
     }
 
     @Test
@@ -126,7 +116,6 @@ public class BookControllerTest {
 
         when(authorService.getAuthorById(1)).thenReturn(author);
         when(bookService.getBooksByAuthor(author)).thenReturn(books);
-        when(bookMapper.toDto(any(Book.class))).thenReturn(new BookDto());
 
         ResponseEntity<List<BookDto>> response = bookController.getBooksByAuthor(1);
 
@@ -134,7 +123,6 @@ public class BookControllerTest {
         assertEquals(bookDtos.size(), response.getBody().size());
         verify(authorService, times(1)).getAuthorById(1);
         verify(bookService, times(1)).getBooksByAuthor(author);
-        verify(bookMapper, times(books.size())).toDto(any(Book.class));
     }
 
     @Test
@@ -154,14 +142,12 @@ public class BookControllerTest {
         List<BookDto> bookDtos = Arrays.asList(new BookDto(), new BookDto());
 
         when(bookService.getBooksByGenre("Genre")).thenReturn(books);
-        when(bookMapper.toDto(any(Book.class))).thenReturn(new BookDto());
 
         ResponseEntity<List<BookDto>> response = bookController.getBooksByGenre("Genre");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(bookDtos.size(), response.getBody().size());
         verify(bookService, times(1)).getBooksByGenre("Genre");
-        verify(bookMapper, times(books.size())).toDto(any(Book.class));
 
     }
 
@@ -171,14 +157,12 @@ public class BookControllerTest {
         List<BookDto> bookDtos = Arrays.asList(new BookDto(), new BookDto());
 
         when(bookService.getBooksByTitle("Title")).thenReturn(books);
-        when(bookMapper.toDto(any(Book.class))).thenReturn(new BookDto());
 
         ResponseEntity<List<BookDto>> response = bookController.getBooksByTitle("Title");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(bookDtos.size(), response.getBody().size());
         verify(bookService, times(1)).getBooksByTitle("Title");
-        verify(bookMapper, times(books.size())).toDto(any(Book.class));
     }
 
 }
