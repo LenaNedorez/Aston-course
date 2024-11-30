@@ -25,10 +25,4 @@ public class BookDto {
     private Author author;
     List<Genre> genres;
 
-    public BookDto(Integer id, String title, String genre, Author author) {
-        this.id = id;
-        this.title = title;
-        this.genre = genre;
-        this.author = author;
-    }
 }

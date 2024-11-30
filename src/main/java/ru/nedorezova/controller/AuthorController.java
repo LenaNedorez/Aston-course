@@ -2,13 +2,10 @@ package ru.nedorezova.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.nedorezova.dto.AuthorDto;
 import ru.nedorezova.exception.AuthorNotFoundException;
 import ru.nedorezova.mappers.AuthorMapper;
 import ru.nedorezova.entity.Author;
@@ -20,7 +17,8 @@ import java.util.stream.Collectors;
 /**
  * Controller for managing authors.
  */
-@Controller
+@RestController
+@RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -31,7 +29,6 @@ public class AuthorController {
      *
      * @param authorService The AuthorService to use.
      */
-    @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
@@ -39,51 +36,51 @@ public class AuthorController {
     /**
      * Gets a list of all authors and adds it to the model.
      *
-     * @param model The model to add the authors to.
      * @return The name of the view to render.
      */
-    @GetMapping("/authors")
-    public String getAllAuthors(Model model) {
-        List<Author> listOfAuthors = authorService.getAllAuthors();
-        model.addAttribute("listOfAuthors", listOfAuthors
-                .stream()
+    @GetMapping("/")
+    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
+        List<AuthorDto> allAuthors = authorService.getAllAuthors().stream()
                 .map(AuthorMapper.INSTANCE::toDto)
-                .collect(Collectors.toList()));
-        return "list-of-authors";
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(allAuthors);
     }
 
     /**
      * Gets an author by ID and adds it to the model.
      *
      * @param id   The ID of the author to retrieve.
-     * @param model The model to add the author to.
      * @return The name of the view to render.
      */
-    @GetMapping("/authors/{id}")
-    public String getAuthorById(@PathVariable Integer id, Model model) {
-        Author author = null;
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Integer id) {
         try {
-            author = authorService.getAuthorById(id);
+            Author author = authorService.getAuthorById(id);
+            return ResponseEntity.ok(AuthorMapper.INSTANCE.toDto(author));
         } catch (AuthorNotFoundException e) {
             logger.error("Error fetching author with ID: {}", id, e);
+            return ResponseEntity.notFound().build();
         }
-        model.addAttribute("author", AuthorMapper.INSTANCE.toDto(author));
-        return "author";
     }
 
     /**
      * Creates a new author and redirects to the list of authors.
      *
-     * @param name   The name of the new author.
-     * @param surname The surname of the new author.
+     * @param authorDto   The Dto of the new author.
      * @return The redirect URL.
      */
-    @PostMapping("/authors")
-    public String createAuthor(@RequestParam String name, @RequestParam String surname) {
+    @PostMapping("/new")
+    public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto) {
         Author newAuthor = new Author();
-        newAuthor.setName(name);
-        newAuthor.setSurname(surname);
-        authorService.createAuthor(newAuthor);
-        return "redirect:/authors";
+        newAuthor.setName(authorDto.getName());
+        newAuthor.setSurname(authorDto.getSurname());
+        Author createdAuthor = authorService.createAuthor(newAuthor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(AuthorMapper.INSTANCE.toDto(createdAuthor));
+    }
+
+    @ExceptionHandler(AuthorNotFoundException.class)
+    public ResponseEntity<String> handleAuthorNotFoundException(AuthorNotFoundException ex) {
+        logger.error("Author wasn't found:", ex);
+        return ResponseEntity.notFound().build();
     }
 }

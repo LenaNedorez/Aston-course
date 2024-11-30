@@ -3,10 +3,14 @@ package ru.nedorezova.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.nedorezova.dto.GenreDto;
 import ru.nedorezova.exception.BookNotFoundException;
 import ru.nedorezova.exception.GenreNotFoundException;
 import ru.nedorezova.mappers.BookMapper;
@@ -22,7 +26,8 @@ import java.util.stream.Collectors;
 /**
  * Controller for managing genres.
  */
-@Controller
+@RestController
+@RequestMapping("/genres")
 public class GenreController {
 
     private final GenreService genreService;
@@ -44,57 +49,50 @@ public class GenreController {
     /**
      * Gets a list of all genres and adds it to the model.
      *
-     * @param model The model to add the genres to.
      * @return The name of the view to render.
      */
-    @GetMapping("/genres")
-    public String getAllGenres(Model model) {
-        List<Genre> genres = genreService.getAllGenres();
-        model.addAttribute("genres", genres.stream()
+    @GetMapping
+    public ResponseEntity<List<GenreDto>> getAllGenres() {
+        List<GenreDto> genreDtos = genreService.getAllGenres().stream()
                 .map(GenreMapper.INSTANCE::toDto)
-                .collect(Collectors.toList()));
-        return "genres";
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(genreDtos);
     }
 
     /**
      * Gets a genre by ID and adds it to the model.
      *
      * @param id   The ID of the genre to retrieve.
-     * @param model The model to add the genre to.
      * @return The name of the view to render.
      */
-    @GetMapping("/genres/{id}")
-    public String getGenreById(@PathVariable Integer id, Model model) {
-        Genre genre = null;
+    @GetMapping("/{id}")
+    public ResponseEntity<GenreDto> getGenreById(@PathVariable Integer id) {
         try {
-            genre = genreService.getGenreById(id);
+            Genre genre = genreService.getGenreById(id);
+            return ResponseEntity.ok(GenreMapper.INSTANCE.toDto(genre));
         } catch (GenreNotFoundException e) {
             logger.error("Error fetching genre with ID: {}", id, e);
+            return ResponseEntity.notFound().build();
         }
-        model.addAttribute("genre", GenreMapper.INSTANCE.toDto(genre));
-        return "genres";
     }
 
     /**
      * Gets a list of genres associated with a specific book and adds it to the model.
      *
      * @param bookId The ID of the book to retrieve genres for.
-     * @param model  The model to add the genres to.
      * @return The name of the view to render.
      */
-    @GetMapping("/genres/byBook/{bookId}")
-    public String getGenresByBook(@PathVariable Integer bookId, Model model) {
-        Book book = null;
+    @GetMapping("/byBook/{bookId}")
+    public ResponseEntity<List<GenreDto>> getGenresByBook(@PathVariable Integer bookId) {
         try {
-            book = bookService.getBookById(bookId);
+            Book book = bookService.getBookById(bookId);
+            List<GenreDto> genreDtos = genreService.getGenresByBook(book).stream()
+                    .map(GenreMapper.INSTANCE::toDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(genreDtos);
         } catch (BookNotFoundException e) {
             logger.error("Error fetching book with ID: {}", bookId, e);
+            return ResponseEntity.notFound().build();
         }
-        List<Genre> genres = genreService.getGenresByBook(book);
-        model.addAttribute("genres", genres.stream()
-                .map(GenreMapper.INSTANCE::toDto)
-                .collect(Collectors.toList()));
-        model.addAttribute("book", BookMapper.INSTANCE.toDto(book));
-        return "genres";
     }
 }
